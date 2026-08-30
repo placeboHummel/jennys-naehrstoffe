@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jennys Nährstoffe – Tägliche Supplement- & Mikronährstoff-Bilanz</title>
+  <title>Jennys Nährstoffe – Tägliche Supplement- &amp; Mikronährstoff-Bilanz</title>
   
   <!-- Meta & SEO -->
   <meta name="description" content="Minimalistisches, elegantes Wellness-Dashboard für Jennys tägliche Nahrungsergänzungsmittel und Mikronährstoff-Bedarfsdeckung nach D-A-CH und EFSA Referenzwerten mit umschaltbarem Dosierungs-Modus.">
-  <meta name="theme-color" content="#F9F6F0">
+  <meta name="theme-color" content="#FAF8F5">
 
   <!-- Google Fonts: Outfit, Inter & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Custom Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
@@ -59,13 +59,13 @@
         </div>
       </div>
 
-      <!-- Right: Meta Tags & Date Pill -->
+      <!-- Right: Meta Tags -->
       <div class="header-meta">
         <div class="wellness-badge">
           <span class="status-dot"></span>
           <span>D-A-CH &amp; EFSA Referenz</span>
         </div>
-        <div class="today-date-pill" id="todayDate">Heute</div>
+        <div class="stack-meta-pill" id="headerStackMeta">9 Produkte &bull; 30 Nährstoffe</div>
       </div>
 
     </div>
@@ -84,27 +84,16 @@
             <img src="assets/jenny_avatar.jpg" alt="Jenny" class="sidebar-avatar-img">
           </div>
           <div class="sidebar-profile-text">
-            <span class="profile-name">Jennys Daily Stack</span>
-            <span class="profile-status-text" id="sidebarProgressStatus">Bereit für den Tag</span>
+            <span class="profile-name">Jennys Daily Routine</span>
+            <span class="profile-status-text">Persönlicher Supplement-Stack</span>
           </div>
-          <span class="sidebar-count-badge" id="sidebarCountBadge">8 Produkte</span>
+          <span class="sidebar-count-badge" id="sidebarCountBadge">9 Produkte</span>
         </div>
 
         <!-- Mode Notification Banner in Sidebar -->
         <div class="active-mode-banner" id="sidebarModeBanner">
           <span class="mode-banner-icon" id="modeBannerIcon">🌸</span>
           <span class="mode-banner-text" id="modeBannerText">Aktiver Modus: <strong>Jennys Art</strong> (1 Kapsel / Mg: 3)</span>
-        </div>
-
-        <!-- Routine Progress Bar -->
-        <div class="daily-progress-container">
-          <div class="progress-info-row">
-            <span class="progress-title">Heutige Einnahme</span>
-            <span class="progress-fraction" id="progressFraction">0 / 8</span>
-          </div>
-          <div class="progress-track">
-            <div class="progress-fill" id="dailyProgressFill" style="width: 0%;"></div>
-          </div>
         </div>
 
         <!-- Routine Stats by Time of Day -->
@@ -123,12 +112,6 @@
         <!-- List of Jenny's Real Supplements -->
         <div class="supplements-list" id="supplementsList">
           <!-- Dynamically populated via JS -->
-        </div>
-
-        <!-- Sidebar Batch Actions -->
-        <div class="sidebar-footer-actions">
-          <button class="quick-action-btn" id="checkAllBtn">✓ Alle als eingenommen markieren</button>
-          <button class="quick-action-btn secondary" id="resetChecksBtn">Zurücksetzen</button>
         </div>
 
       </div>

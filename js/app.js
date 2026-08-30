@@ -12,27 +12,6 @@ let currentSearchQuery = '';
 let currentSidebarTimeFilter = 'all';
 let currentDosageMode = localStorage.getItem('jenny_dosage_mode') || 'jenny'; // 'jenny' | 'manufacturer'
 
-// LocalStorage Keys
-const TODAY_STORAGE_KEY = `jenny_intake_${new Date().toISOString().slice(0, 10)}`;
-
-// Load saved daily checklist
-function getDailyChecklist() {
-  try {
-    const saved = localStorage.getItem(TODAY_STORAGE_KEY);
-    return saved ? JSON.parse(saved) : {};
-  } catch (e) {
-    return {};
-  }
-}
-
-function saveDailyChecklist(checklist) {
-  try {
-    localStorage.setItem(TODAY_STORAGE_KEY, JSON.stringify(checklist));
-  } catch (e) {
-    console.error('Failed to save to localStorage', e);
-  }
-}
-
 // Format numbers cleanly
 function formatNumber(num) {
   if (num === undefined || num === null || isNaN(num)) return 0;
@@ -97,10 +76,6 @@ function renderKPIs(calculatedNutrients) {
   const coveredCount = calculatedNutrients.filter(n => n.percent >= 100).length;
   const coveragePercent = Math.round((coveredCount / calculatedNutrients.length) * 100);
 
-  // Daily intake checked count
-  const dailyChecks = getDailyChecklist();
-  const checkedCount = activeSupps.filter(s => dailyChecks[s.id]).length;
-
   const kpiBanner = document.getElementById('kpiBanner');
   if (!kpiBanner) return;
 
@@ -113,21 +88,21 @@ function renderKPIs(calculatedNutrients) {
       <div class="kpi-icon-wrap">✨</div>
       <div class="kpi-details">
         <div class="kpi-value">${coveragePercent}%</div>
-        <div class="kpi-label">D-A-CH / EFSA Bedarfsdeckung (${coveredCount}/${calculatedNutrients.length})</div>
+        <div class="kpi-label">D-A-CH / EFSA Bedarfsdeckung (${coveredCount}/${calculatedNutrients.length} optimal)</div>
       </div>
     </div>
     <div class="kpi-card kpi-sage">
       <div class="kpi-icon-wrap">🌿</div>
       <div class="kpi-details">
-        <div class="kpi-value">${totalUnits} Einheiten</div>
-        <div class="kpi-label">${activeSupps.length} Produkte (${modeBadgeText})</div>
+        <div class="kpi-value">${activeSupps.length} Produkte</div>
+        <div class="kpi-label">${totalUnits} Einheiten täglich (${modeBadgeText})</div>
       </div>
     </div>
     <div class="kpi-card">
       <div class="kpi-icon-wrap">🌸</div>
       <div class="kpi-details">
-        <div class="kpi-value">${checkedCount} / ${activeSupps.length}</div>
-        <div class="kpi-label">Heute bereits eingenommen</div>
+        <div class="kpi-value">${calculatedNutrients.length} Vitalstoffe</div>
+        <div class="kpi-label">5 Nährstoff-Kategorien analysiert</div>
       </div>
     </div>
   `;
@@ -165,38 +140,14 @@ function updateDosageModeUI() {
 function renderSupplementsSidebar() {
   const container = document.getElementById('supplementsList');
   const countBadge = document.getElementById('sidebarCountBadge');
-  const checklist = getDailyChecklist();
 
   if (!container) return;
 
   const activeSupps = supplementsState.filter(s => s.active);
-  const checkedCount = activeSupps.filter(s => checklist[s.id]).length;
-  const progressPercent = activeSupps.length > 0 ? Math.round((checkedCount / activeSupps.length) * 100) : 0;
 
   // Update Count Badge
   if (countBadge) {
     countBadge.textContent = `${activeSupps.length} aktiv`;
-  }
-
-  // Update Daily Progress Bar & Status Text
-  const progressFraction = document.getElementById('progressFraction');
-  const dailyProgressFill = document.getElementById('dailyProgressFill');
-  const sidebarProgressStatus = document.getElementById('sidebarProgressStatus');
-
-  if (progressFraction) {
-    progressFraction.textContent = `${checkedCount} / ${activeSupps.length} (${progressPercent}%)`;
-  }
-  if (dailyProgressFill) {
-    dailyProgressFill.style.width = `${progressPercent}%`;
-  }
-  if (sidebarProgressStatus) {
-    if (checkedCount === 0) {
-      sidebarProgressStatus.textContent = 'Bereit für den Tag';
-    } else if (checkedCount === activeSupps.length) {
-      sidebarProgressStatus.textContent = 'Perfekt versorgt heute! ✨';
-    } else {
-      sidebarProgressStatus.textContent = `${checkedCount} von ${activeSupps.length} erledigt`;
-    }
   }
 
   // Update routine stat box by daytime
@@ -237,7 +188,6 @@ function renderSupplementsSidebar() {
   }
 
   container.innerHTML = filteredSupplements.map(supp => {
-    const isChecked = !!checklist[supp.id];
     const imageHtml = supp.image 
       ? `<img src="${supp.image}" alt="${supp.name}" onerror="this.parentElement.innerHTML='<div class=\'supplement-img-placeholder\'>${supp.icon || '🌸'}</div>'"/>`
       : `<div class="supplement-img-placeholder">${supp.icon || '🌸'}</div>`;
@@ -253,9 +203,9 @@ function renderSupplementsSidebar() {
       : '';
 
     return `
-      <div class="supplement-card ${!supp.active ? 'is-paused' : ''} ${isChecked ? 'is-checked-card' : ''}" data-id="${supp.id}">
+      <div class="supplement-card ${!supp.active ? 'is-paused' : ''}" data-id="${supp.id}">
         <div class="supplement-top-row">
-          <div class="supplement-img-wrap" title="Original-Produktbild">
+          <div class="supplement-img-wrap" title="${supp.name}">
             ${imageHtml}
           </div>
           <div class="supplement-info">
@@ -279,11 +229,9 @@ function renderSupplementsSidebar() {
         ${supp.notes ? `<div class="supplement-note-text">${supp.notes}</div>` : ''}
 
         <div class="supplement-bottom-bar">
-          <label class="daily-check-label" title="Als heute eingenommen markieren">
-            <input type="checkbox" class="daily-check-input" data-check-id="${supp.id}" ${isChecked ? 'checked' : ''}/>
-            <span class="custom-checkbox"></span>
-            <span class="check-text">${isChecked ? 'Eingenommen ✓' : 'Heute einnehmen'}</span>
-          </label>
+          <span class="supplement-status-tag ${supp.active ? 'active-tag' : 'paused-tag'}">
+            ${supp.active ? 'In Bilanz aktiv' : 'Pausiert'}
+          </span>
 
           <button class="toggle-active-btn" data-toggle-id="${supp.id}" title="Produkt in Nährstoff-Bilanz an- oder abwählen">
             ${supp.active ? 'Pausieren' : 'Aktivieren'}
@@ -293,17 +241,7 @@ function renderSupplementsSidebar() {
     `;
   }).join('');
 
-  // Event listeners for checkboxes & toggle
-  container.querySelectorAll('.daily-check-input').forEach(checkbox => {
-    checkbox.addEventListener('change', (e) => {
-      const id = e.target.getAttribute('data-check-id');
-      const currentList = getDailyChecklist();
-      currentList[id] = e.target.checked;
-      saveDailyChecklist(currentList);
-      renderApp();
-    });
-  });
-
+  // Event listeners for toggle active/pause
   container.querySelectorAll('.toggle-active-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       const id = e.target.getAttribute('data-toggle-id');
@@ -411,7 +349,7 @@ function renderNutrientsGrid(calculatedNutrients) {
             <span class="source-tag-amount">${formatNumber(s.amount)} ${s.unit}</span>
           </span>
         `).join('')
-      : `<span style="font-size: 11px; color: var(--text-muted); font-style: italic;">Aktuell keine direkte Zufuhr über aktive Supplements</span>`;
+      : `<span style="font-size: 11.5px; color: var(--text-muted); font-style: italic;">Aktuell keine Zufuhr über aktive Supplements</span>`;
 
     return `
       <div class="nutrient-card" data-nutrient-id="${item.id}" title="Klicken für wissenschaftliche Details &amp; Fachinformationen">
@@ -497,7 +435,7 @@ function openNutrientModal(nutrient) {
             ${s.image ? `<img src="${s.image}" class="modal-source-thumb" alt="${s.supplementName}"/>` : ''}
             <div>
               <div class="modal-source-name">${s.supplementName}</div>
-              <div style="font-size: 11px; color: var(--text-muted);">${s.brand} &bull; ${s.dosageText}</div>
+              <div style="font-size: 11.5px; color: var(--text-muted);">${s.brand} &bull; ${s.dosageText}</div>
             </div>
           </div>
           <div class="modal-source-val">${formatNumber(s.amount)} ${s.unit}</div>
@@ -616,13 +554,6 @@ function renderApp() {
 
 // Initial Setup & Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
-  // Format today's date in header
-  const todayElement = document.getElementById('todayDate');
-  if (todayElement) {
-    const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-    todayElement.textContent = new Date().toLocaleDateString('de-DE', options);
-  }
-
   // Dosage Mode Switcher Buttons
   const btnModeJenny = document.getElementById('btnModeJenny');
   const btnModeManufacturer = document.getElementById('btnModeManufacturer');
@@ -644,28 +575,6 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('jenny_dosage_mode', 'manufacturer');
         renderApp();
       }
-    });
-  }
-
-  // Sidebar Batch Buttons: Check All / Reset
-  const checkAllBtn = document.getElementById('checkAllBtn');
-  const resetChecksBtn = document.getElementById('resetChecksBtn');
-
-  if (checkAllBtn) {
-    checkAllBtn.addEventListener('click', () => {
-      const checklist = {};
-      supplementsState.filter(s => s.active).forEach(s => {
-        checklist[s.id] = true;
-      });
-      saveDailyChecklist(checklist);
-      renderApp();
-    });
-  }
-
-  if (resetChecksBtn) {
-    resetChecksBtn.addEventListener('click', () => {
-      saveDailyChecklist({});
-      renderApp();
     });
   }
 
