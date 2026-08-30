@@ -1,0 +1,19 @@
+{
+  "name": "jennys-naehrstoffe",
+  "version": "1.0.0",
+  "description": "Jennys personal wellness and nutrient balance dashboard",
+  "scripts": {
+    "dev": "python3 -m http.server 8095",
+    "start": "python3 -m http.server 8095"
+  },
+  "keywords": [
+    "nutrition",
+    "supplements",
+    "wellness",
+    "dashboard",
+    "dach-reference",
+    "efsa"
+  ],
+  "author": "placeboHummel",
+  "license": "MIT"
+}

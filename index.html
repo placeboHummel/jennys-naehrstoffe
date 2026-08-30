@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jennys Nährstoffe – Tägliche Supplement- & Mikronährstoff-Bilanz</title>
+  
+  <!-- Meta & SEO -->
+  <meta name="description" content="Minimalistisches, elegantes Wellness-Dashboard für Jennys tägliche Nahrungsergänzungsmittel und Mikronährstoff-Bedarfsdeckung nach D-A-CH und EFSA Referenzwerten mit umschaltbarem Dosierungs-Modus.">
+  <meta name="theme-color" content="#F9F6F0">
+
+  <!-- Google Fonts: Outfit, Inter & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top App Navigation & Profile Header -->
+  <header class="app-header">
+    <div class="header-container">
+      
+      <!-- Left: Profile & Brand Section -->
+      <div class="brand-section">
+        <div class="jenny-avatar-wrap" id="headerAvatarWrap" title="Jennys Vitalitäts-Profil">
+          <img src="assets/jenny_avatar.jpg" alt="Jenny" class="jenny-avatar-img">
+          <span class="avatar-status-sparkle">✨</span>
+        </div>
+        <div class="brand-title-wrap">
+          <div class="greeting-row">
+            <span class="greeting-text">Hallo Jenny</span>
+            <span class="greeting-heart">🤍</span>
+          </div>
+          <h1 class="brand-title">Jennys <span class="highlight">Nährstoffe</span></h1>
+          <span class="brand-subtitle">Individuelles Wellness- &amp; Mikronährstoff-Dashboard</span>
+        </div>
+      </div>
+
+      <!-- Center / Right: Dosage Switcher & Meta -->
+      <div class="header-center-controls">
+        <div class="dosage-mode-switch-wrap" role="group" aria-label="Dosierungs-Modus wählen">
+          <button class="dosage-switch-btn active" id="btnModeJenny" data-mode="jenny" title="Jennys individuelle Dosierung (1 Kapsel für alle Produkte, außer Magnesium = 3 Kapseln)">
+            <span class="switch-icon">🌸</span>
+            <span class="switch-text-group">
+              <span class="switch-title">Jennys Art</span>
+              <span class="switch-sub">1 Kapsel (Mg: 3)</span>
+            </span>
+          </button>
+          <button class="dosage-switch-btn" id="btnModeManufacturer" data-mode="manufacturer" title="Offizielle Verzehrempfehlung laut Hersteller-Packung">
+            <span class="switch-icon">📋</span>
+            <span class="switch-text-group">
+              <span class="switch-title">Hersteller-Empfehlung</span>
+              <span class="switch-sub">Standard-Dosis</span>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right: Meta Tags & Date Pill -->
+      <div class="header-meta">
+        <div class="wellness-badge">
+          <span class="status-dot"></span>
+          <span>D-A-CH &amp; EFSA Referenz</span>
+        </div>
+        <div class="today-date-pill" id="todayDate">Heute</div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main 2-Column Dashboard Layout -->
+  <div class="dashboard-container">
+
+    <!-- LEFT STICKY COLUMN: Jennys Daily Supplements -->
+    <aside class="supplements-sidebar" id="sidebarContainer">
+      <div class="sidebar-card">
+        
+        <!-- Profile Mini Header in Sidebar -->
+        <div class="sidebar-profile-card">
+          <div class="sidebar-avatar-small">
+            <img src="assets/jenny_avatar.jpg" alt="Jenny" class="sidebar-avatar-img">
+          </div>
+          <div class="sidebar-profile-text">
+            <span class="profile-name">Jennys Daily Stack</span>
+            <span class="profile-status-text" id="sidebarProgressStatus">Bereit für den Tag</span>
+          </div>
+          <span class="sidebar-count-badge" id="sidebarCountBadge">8 Produkte</span>
+        </div>
+
+        <!-- Mode Notification Banner in Sidebar -->
+        <div class="active-mode-banner" id="sidebarModeBanner">
+          <span class="mode-banner-icon" id="modeBannerIcon">🌸</span>
+          <span class="mode-banner-text" id="modeBannerText">Aktiver Modus: <strong>Jennys Art</strong> (1 Kapsel / Mg: 3)</span>
+        </div>
+
+        <!-- Routine Progress Bar -->
+        <div class="daily-progress-container">
+          <div class="progress-info-row">
+            <span class="progress-title">Heutige Einnahme</span>
+            <span class="progress-fraction" id="progressFraction">0 / 8</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="dailyProgressFill" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <!-- Routine Stats by Time of Day -->
+        <div class="routine-tracker-box" id="routineStatsBox">
+          <!-- Dynamically populated via JS -->
+        </div>
+
+        <!-- Time Filter Chips (Morgens, Mittags, Abends) -->
+        <div class="time-filter-chips">
+          <button class="time-chip active" data-time="all">Alle</button>
+          <button class="time-chip" data-time="morning">☀️ Morgens</button>
+          <button class="time-chip" data-time="noon">🌤️ Mittags</button>
+          <button class="time-chip" data-time="evening">🌙 Abends</button>
+        </div>
+
+        <!-- List of Jenny's Real Supplements -->
+        <div class="supplements-list" id="supplementsList">
+          <!-- Dynamically populated via JS -->
+        </div>
+
+        <!-- Sidebar Batch Actions -->
+        <div class="sidebar-footer-actions">
+          <button class="quick-action-btn" id="checkAllBtn">✓ Alle als eingenommen markieren</button>
+          <button class="quick-action-btn secondary" id="resetChecksBtn">Zurücksetzen</button>
+        </div>
+
+      </div>
+    </aside>
+
+    <!-- RIGHT COLUMN: Nutrients Dashboard & Controls -->
+    <main class="nutrients-main">
+
+      <!-- Top KPI Summary Banner -->
+      <section class="kpi-banner-grid" id="kpiBanner" aria-label="Nährstoff-Bedarfsdeckung Zusammenfassung">
+        <!-- Dynamically populated via JS -->
+      </section>
+
+      <!-- Search & Category Filters -->
+      <section class="controls-bar" aria-label="Nährstoff-Filter und Suche">
+        <div class="search-input-wrap">
+          <span class="search-icon">🔍</span>
+          <input 
+            type="text" 
+            id="nutrientSearch" 
+            class="search-input" 
+            placeholder="Nährstoff, Marke (z. B. Orthomol, Sunday Natural, Zinzino) oder Nutzen suchen..." 
+            autocomplete="off"
+            aria-label="Nährstoffe suchen"
+          >
+          <button class="search-clear-btn" id="searchClearBtn" aria-label="Suche zurücksetzen">✕</button>
+        </div>
+
+        <div class="category-tabs" id="categoryTabs">
+          <!-- Dynamically populated via JS -->
+        </div>
+      </section>
+
+      <!-- 2-Column Side-by-Side Nutrient Grid -->
+      <section class="nutrients-grid" id="nutrientsGrid" aria-label="Nährstoff-Details und Prozentbalken">
+        <!-- Dynamically populated via JS -->
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Interactive Nutrient Detail Modal / Drawer -->
+  <div class="modal-backdrop" id="nutrientModal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-content">
+      <button class="modal-close-btn" id="modalCloseBtn" aria-label="Schließen">✕</button>
+      <div id="modalBody">
+        <!-- Dynamically populated via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div>🌸 Jennys Nährstoffe &bull; Maßgeschneiderte Vitalitäts-Übersicht für Jenny</div>
+    <div class="footer-links">
+      <span class="footer-link">Referenzen: D-A-CH Referenzwerte (DGE/ÖGE/SGE) &amp; EFSA</span>
+    </div>
+  </footer>
+
+  <!-- Application Logic -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
