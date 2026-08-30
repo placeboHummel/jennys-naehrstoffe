@@ -3,7 +3,7 @@
  * Luxury Wellness Dashboard with dual dosage modes & comprehensive scientific evidence
  */
 
-import { JENNY_SUPPLEMENTS, NUTRIENTS_MASTER } from './data.js';
+import { JENNY_SUPPLEMENTS, NUTRIENTS_MASTER } from './data.js?v=2.2.0';
 
 // Application State
 let supplementsState = JSON.parse(JSON.stringify(JENNY_SUPPLEMENTS));
@@ -552,8 +552,32 @@ function renderApp() {
   renderNutrientsGrid(calculatedNutrients);
 }
 
+// Mobile Header Shrink on Scroll
+function initHeaderScrollListener() {
+  const headerEl = document.getElementById('mainHeader');
+  if (!headerEl) return;
+
+  let ticking = false;
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        if (window.scrollY > 25) {
+          headerEl.classList.add('is-scrolled');
+        } else {
+          headerEl.classList.remove('is-scrolled');
+        }
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+}
+
 // Initial Setup & Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
+  initHeaderScrollListener();
+
   // Dosage Mode Switcher Buttons
   const btnModeJenny = document.getElementById('btnModeJenny');
   const btnModeManufacturer = document.getElementById('btnModeManufacturer');

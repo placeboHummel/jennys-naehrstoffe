@@ -139,7 +139,7 @@ button {
 }
 
 /* ==========================================================================
-   APP HEADER & CONTROLS
+   APP HEADER & CONTROLS (SMOOTH SHRINK ON SCROLL)
    ========================================================================== */
 
 .app-header {
@@ -148,11 +148,19 @@ button {
   z-index: 50;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  background: rgba(255, 255, 255, 0.94);
+  background: rgba(255, 255, 255, 0.96);
   border-bottom: 1.5px solid rgba(212, 172, 138, 0.25);
-  padding: 14px 0;
+  padding: 13px 0;
   box-shadow: 0 4px 20px rgba(140, 100, 70, 0.05);
-  transition: var(--transition-smooth);
+  transition: padding 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, background 0.25s ease;
+}
+
+/* Scrolled Header State */
+.app-header.is-scrolled {
+  padding: 6px 0;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 6px 24px rgba(120, 80, 50, 0.12);
+  border-bottom-color: rgba(184, 115, 75, 0.35);
 }
 
 .header-container {
@@ -163,28 +171,37 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 18px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .brand-section {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
 }
 
 .jenny-avatar-wrap {
   position: relative;
-  width: 54px;
-  height: 54px;
-  min-width: 54px;
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
   border-radius: 50%;
   padding: 2.5px;
   background: linear-gradient(135deg, #F7EAE3 0%, #D49B55 50%, #B8734A 100%);
   box-shadow: 0 4px 18px rgba(184, 115, 75, 0.28);
-  transition: transform var(--transition-smooth);
+  transition: width 0.25s ease, height 0.25s ease, min-width 0.25s ease, transform var(--transition-smooth);
 }
 
 .jenny-avatar-wrap:hover {
   transform: scale(1.08);
+}
+
+.app-header.is-scrolled .jenny-avatar-wrap {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  padding: 1.5px;
+  box-shadow: 0 2px 10px rgba(184, 115, 75, 0.2);
 }
 
 .jenny-avatar-img {
@@ -199,16 +216,25 @@ button {
   position: absolute;
   bottom: -2px;
   right: -2px;
-  font-size: 13px;
+  font-size: 12px;
   background: #FFFFFF;
   border-radius: 50%;
-  width: 21px;
-  height: 21px;
+  width: 19px;
+  height: 19px;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   animation: sparkleAnim 3s infinite ease-in-out;
+  transition: transform 0.25s ease;
+}
+
+.app-header.is-scrolled .avatar-status-sparkle {
+  width: 15px;
+  height: 15px;
+  font-size: 10px;
+  bottom: -1px;
+  right: -1px;
 }
 
 @keyframes sparkleAnim {
@@ -226,6 +252,7 @@ button {
   align-items: center;
   gap: 6px;
   margin-bottom: 2px;
+  transition: opacity 0.2s ease, height 0.2s ease;
 }
 
 .greeting-text {
@@ -249,11 +276,16 @@ button {
 
 .brand-title {
   font-family: var(--font-heading);
-  font-size: 23px;
+  font-size: 22px;
   font-weight: 800;
   letter-spacing: -0.02em;
   color: var(--text-main);
   line-height: 1.15;
+  transition: font-size 0.25s ease;
+}
+
+.app-header.is-scrolled .brand-title {
+  font-size: 17px;
 }
 
 .brand-title .highlight {
@@ -267,6 +299,7 @@ button {
   font-weight: 600;
   color: var(--text-secondary);
   letter-spacing: 0.01em;
+  transition: opacity 0.2s ease;
 }
 
 /* ==========================================================================
@@ -280,23 +313,33 @@ button {
 
 .dosage-mode-switch-wrap {
   display: inline-flex;
-  padding: 4px;
+  padding: 3.5px;
   background: #F3ECE4;
   border: 1.5px solid rgba(212, 172, 138, 0.35);
   border-radius: var(--radius-full);
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
   gap: 4px;
+  transition: padding 0.25s ease;
+}
+
+.app-header.is-scrolled .dosage-mode-switch-wrap {
+  padding: 2.5px;
 }
 
 .dosage-switch-btn {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  padding: 8px 16px;
+  gap: 8px;
+  padding: 7px 15px;
   border-radius: var(--radius-full);
   color: var(--text-secondary);
   transition: var(--transition-smooth);
   user-select: none;
+}
+
+.app-header.is-scrolled .dosage-switch-btn {
+  padding: 5px 12px;
+  gap: 6px;
 }
 
 .dosage-switch-btn:hover {
@@ -310,7 +353,12 @@ button {
 }
 
 .switch-icon {
-  font-size: 17px;
+  font-size: 16px;
+  transition: font-size 0.25s ease;
+}
+
+.app-header.is-scrolled .switch-icon {
+  font-size: 14px;
 }
 
 .switch-text-group {
@@ -321,13 +369,17 @@ button {
 
 .switch-title {
   font-family: var(--font-heading);
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 800;
   line-height: 1.2;
 }
 
+.app-header.is-scrolled .switch-title {
+  font-size: 11.5px;
+}
+
 .switch-sub {
-  font-size: 10.5px;
+  font-size: 10px;
   font-weight: 600;
   color: var(--text-muted);
 }
@@ -339,7 +391,8 @@ button {
 .header-meta {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  transition: opacity 0.2s ease;
 }
 
 .wellness-badge {
@@ -1595,7 +1648,47 @@ button {
   .header-container {
     flex-direction: column;
     align-items: flex-start;
-    gap: 14px;
+    gap: 12px;
+  }
+
+  .app-header.is-scrolled .header-container {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .app-header.is-scrolled .brand-subtitle,
+  .app-header.is-scrolled .greeting-row,
+  .app-header.is-scrolled .header-meta {
+    display: none;
+  }
+
+  .app-header.is-scrolled .brand-title {
+    font-size: 15px;
+  }
+
+  .app-header.is-scrolled .header-center-controls {
+    width: auto;
+  }
+
+  .app-header.is-scrolled .dosage-mode-switch-wrap {
+    width: auto;
+    gap: 2px;
+    padding: 2px;
+  }
+
+  .app-header.is-scrolled .dosage-switch-btn {
+    padding: 4px 8px;
+    gap: 5px;
+  }
+
+  .app-header.is-scrolled .switch-title {
+    font-size: 11px;
+  }
+
+  .app-header.is-scrolled .switch-sub {
+    display: none;
   }
 
   .header-center-controls {
@@ -1619,12 +1712,15 @@ button {
 
   .dashboard-container {
     grid-template-columns: 1fr;
+    padding: 16px 14px;
+    gap: 20px;
   }
 
   .supplements-sidebar {
     position: static;
     max-height: none;
     overflow-y: visible;
+    padding-right: 0;
   }
 
   .nutrients-grid {
@@ -1637,8 +1733,40 @@ button {
 }
 
 @media (max-width: 640px) {
+  .app-header {
+    padding: 10px 0;
+  }
+
+  .app-header.is-scrolled {
+    padding: 4px 0;
+  }
+
+  .header-container {
+    padding: 0 14px;
+  }
+
+  .jenny-avatar-wrap {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+  }
+
+  .app-header.is-scrolled .jenny-avatar-wrap {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+  }
+
+  .brand-title {
+    font-size: 19px;
+  }
+
   .routine-tracker-box {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  .modal-content {
+    padding: 22px 18px;
   }
 
   .modal-grid-stats {
