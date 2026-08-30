@@ -159,25 +159,25 @@ export const JENNY_SUPPLEMENTS = [
     id: 'sunday-d3-k2-depot',
     name: 'Vitamin D3 20.000 IE + K2 MK7 All Trans',
     brand: 'Sunday Natural',
-    dosageJenny: '1 Kapsel alle 20 Tage (~1.000 IE/Tag Äquivalent)',
-    dosageManufacturer: '1 Kapsel alle 20 Tage (Offizielle Depot-Angabe)',
+    dosageJenny: '1 Kapsel täglich (500 µg / 20.000 IE D3 + 200 µg K2)',
+    dosageManufacturer: '1 Kapsel alle 20 Tage (Depot: ~25 µg / 1.000 IE täglich)',
     unitsJenny: 1,
     unitsManufacturer: 1,
-    timing: 'Morgens / Wöchentlich mit Fettquelle',
+    timing: 'Morgens zur Mahlzeit mit Fettquelle',
     timeGroup: 'morning',
     icon: '☀️',
-    badge: 'Depot: 20.000 IE D3 + 200 µg K2',
+    badge: '20.000 IE D3 + 200 µg K2 MK7',
     image: 'assets/products/sunday_d3_k2.jpg',
     url: 'https://www.sunday.de/vitamin-d3-k2-20000-ie-mk7-all-trans.html',
-    notes: 'Hochdosiertes Premium-Depotpräparat mit 100% all-trans K2VITAL®. Rechnerisch täglich ~25 µg (1.000 IE) D3 und 10 µg K2 bei 20-Tage-Intervall.',
+    notes: 'Hochdosierte Kapsel mit 20.000 IE D3 (500 µg) und 200 µg K2VITAL®. Jenny nimmt täglich 1 Kapsel (500 µg D3); der Hersteller empfiehlt als Depot 1 Kapsel alle 20 Tage (25 µg D3/Tag).',
     active: true,
     nutrientsJenny: {
-      'vitamin-d3': 25,
-      'vitamin-k2': 10
+      'vitamin-d3': 500,       // 1 Kapsel täglich = 500 µg (20.000 IE)
+      'vitamin-k2': 200        // 1 Kapsel täglich = 200 µg K2 MK-7
     },
     nutrientsManufacturer: {
-      'vitamin-d3': 25,
-      'vitamin-k2': 10
+      'vitamin-d3': 25,        // Depot-Intervall: ~25 µg (1.000 IE) täglich
+      'vitamin-k2': 10         // Depot-Intervall: ~10 µg K2 täglich
     }
   },
   {
