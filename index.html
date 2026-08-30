@@ -3,181 +3,184 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>Jennys Nährstoffe – Tägliche Supplement- &amp; Mikronährstoff-Bilanz</title>
+  <title>Jennys Nährstoffe – Wissenschaftliche Supplement- &amp; Nährstoffbilanz</title>
   
-  <!-- Cache Control Meta Tags to prevent stale Safari caching -->
+  <!-- Cache Control Meta Tags -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
   <!-- Meta & SEO -->
-  <meta name="description" content="Minimalistisches, elegantes Wellness-Dashboard für Jennys tägliche Nahrungsergänzungsmittel und Mikronährstoff-Bedarfsdeckung nach D-A-CH und EFSA Referenzwerten mit umschaltbarem Dosierungs-Modus.">
-  <meta name="theme-color" content="#FAF8F5">
+  <meta name="description" content="Wissenschaftliches, minimalistisches Dashboard für Jennys tägliche Nahrungsergänzungsmittel und Mikronährstoff-Bedarfsdeckung nach D-A-CH und EFSA Referenzwerten.">
+  <meta name="theme-color" content="#F8F9FA">
 
-  <!-- Google Fonts: Outfit, Inter & Plus Jakarta Sans -->
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Custom Stylesheet with Cache-Buster -->
-  <link rel="stylesheet" href="css/style.css?v=2.2.0">
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/style.css?v=3.0.0">
 </head>
 <body>
 
-  <!-- Top App Navigation & Profile Header (Shrinks on Mobile Scroll) -->
-  <header class="app-header" id="mainHeader">
-    <div class="header-container">
-      
-      <!-- Left: Profile & Brand Section -->
-      <div class="brand-section">
-        <div class="jenny-avatar-wrap" id="headerAvatarWrap" title="Jennys Vitalitäts-Profil">
-          <img src="assets/jenny_avatar.jpg" alt="Jenny" class="jenny-avatar-img">
-          <span class="avatar-status-sparkle">✨</span>
-        </div>
-        <div class="brand-title-wrap">
-          <div class="greeting-row">
-            <span class="greeting-text">Hallo Jenny</span>
-            <span class="greeting-heart">🤍</span>
-          </div>
-          <h1 class="brand-title">Jennys <span class="highlight">Nährstoffe</span></h1>
-          <span class="brand-subtitle">Individuelles Wellness- &amp; Mikronährstoff-Dashboard</span>
-        </div>
-      </div>
+  <!-- App Wrapper -->
+  <div class="app-layout">
 
-      <!-- Center / Right: Dosage Switcher & Meta -->
-      <div class="header-center-controls">
-        <div class="dosage-mode-switch-wrap" role="group" aria-label="Dosierungs-Modus wählen">
-          <button class="dosage-switch-btn active" id="btnModeJenny" data-mode="jenny" title="Jennys individuelle Dosierung (1 Kapsel für alle Produkte, außer Magnesium = 3 Kapseln)">
-            <span class="switch-icon">🌸</span>
-            <span class="switch-text-group">
-              <span class="switch-title">Jennys Art</span>
-              <span class="switch-sub">1 Kapsel (Mg: 3)</span>
-            </span>
-          </button>
-          <button class="dosage-switch-btn" id="btnModeManufacturer" data-mode="manufacturer" title="Offizielle Verzehrempfehlung laut Hersteller-Packung">
-            <span class="switch-icon">📋</span>
-            <span class="switch-text-group">
-              <span class="switch-title">Hersteller-Empfehlung</span>
-              <span class="switch-sub">Standard-Dosis</span>
-            </span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Right: Meta Tags -->
-      <div class="header-meta">
-        <div class="wellness-badge">
-          <span class="status-dot"></span>
-          <span>D-A-CH &amp; EFSA</span>
-        </div>
-        <div class="stack-meta-pill" id="headerStackMeta">9 Produkte &bull; 30 Nährstoffe</div>
-      </div>
-
-    </div>
-  </header>
-
-  <!-- Main 2-Column Dashboard Layout -->
-  <div class="dashboard-container">
-
-    <!-- LEFT STICKY COLUMN: Jennys Daily Supplements -->
-    <aside class="supplements-sidebar" id="sidebarContainer">
-      <div class="sidebar-card">
+    <!-- Top Header / Hero Section -->
+    <header class="app-header" id="mainHeader">
+      <div class="header-inner">
         
-        <!-- Profile Mini Header in Sidebar -->
-        <div class="sidebar-profile-card">
-          <div class="sidebar-avatar-small">
-            <img src="assets/jenny_avatar.jpg" alt="Jenny" class="sidebar-avatar-img">
+        <!-- Left: Brand, Title & 3-Stat KPI Widget -->
+        <div class="header-brand-block">
+          <div class="header-brand-top">
+            <div class="badge-routine">
+              <span class="badge-dot"></span>
+              <span>JENNYS ROUTINE</span>
+            </div>
+            <div class="jenny-avatar-mini" title="Jenny">
+              <img src="assets/jenny_avatar.jpg" alt="Jenny" class="avatar-img">
+            </div>
           </div>
-          <div class="sidebar-profile-text">
-            <span class="profile-name">Jennys Daily Routine</span>
-            <span class="profile-status-text">Persönlicher Supplement-Stack</span>
+
+          <h1 class="page-title">Jennys Nährstoffe</h1>
+          <p class="page-subtitle">Alle Vitamine, Mineralstoffe und Dosierungen deiner täglichen Einnahme.</p>
+
+          <!-- 3-Stat Summary Box -->
+          <div class="stats-summary-widget" id="headerStatsWidget">
+            <div class="stat-cell">
+              <span class="stat-num" id="statSuppCount">9</span>
+              <span class="stat-label">SUPPLEMENTS</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-cell">
+              <span class="stat-num" id="statNutrientCount">30</span>
+              <span class="stat-label">NÄHRSTOFFE</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-cell">
+              <span class="stat-num highlight-stat" id="statCoveragePct">100%</span>
+              <span class="stat-label" id="statCoverageLabel">BEDARFSDECKUNG</span>
+            </div>
           </div>
-          <span class="sidebar-count-badge" id="sidebarCountBadge">9 Produkte</span>
         </div>
 
-        <!-- Mode Notification Banner in Sidebar -->
-        <div class="active-mode-banner" id="sidebarModeBanner">
-          <span class="mode-banner-icon" id="modeBannerIcon">🌸</span>
-          <span class="mode-banner-text" id="modeBannerText">Aktiver Modus: <strong>Jennys Art</strong> (1 Kapsel / Mg: 3)</span>
-        </div>
+        <!-- Right: Dosage Mode Switcher -->
+        <div class="header-controls-block">
+          <div class="dosage-switcher-card">
+            <div class="switcher-label-row">
+              <span class="switcher-badge-dot"></span>
+              <span class="switcher-heading">Dosierungs-Modus</span>
+            </div>
 
-        <!-- Routine Stats by Time of Day -->
-        <div class="routine-tracker-box" id="routineStatsBox">
-          <!-- Dynamically populated via JS -->
-        </div>
+            <div class="dosage-mode-switch-wrap" role="group" aria-label="Dosierungs-Modus wählen">
+              <button class="dosage-switch-btn active" id="btnModeJenny" data-mode="jenny" title="Jennys individuelle Dosierung (1 Kapsel für alle Produkte, außer Magnesium = 3 Kapseln)">
+                <span class="switch-icon">🌸</span>
+                <span class="switch-text-group">
+                  <span class="switch-title">Jennys Art</span>
+                  <span class="switch-sub">1 Kapsel (Mg: 3)</span>
+                </span>
+              </button>
+              <button class="dosage-switch-btn" id="btnModeManufacturer" data-mode="manufacturer" title="Offizielle Verzehrempfehlung laut Hersteller-Packung">
+                <span class="switch-icon">📋</span>
+                <span class="switch-text-group">
+                  <span class="switch-title">Hersteller-Empfehlung</span>
+                  <span class="switch-sub">Standard-Dosis</span>
+                </span>
+              </button>
+            </div>
 
-        <!-- Time Filter Chips (Morgens, Mittags, Abends) -->
-        <div class="time-filter-chips">
-          <button class="time-chip active" data-time="all">Alle</button>
-          <button class="time-chip" data-time="morning">☀️ Morgens</button>
-          <button class="time-chip" data-time="noon">🌤️ Mittags</button>
-          <button class="time-chip" data-time="evening">🌙 Abends</button>
-        </div>
-
-        <!-- List of Jenny's Real Supplements -->
-        <div class="supplements-list" id="supplementsList">
-          <!-- Dynamically populated via JS -->
+            <div class="active-mode-caption" id="activeModeCaption">
+              <span>Modus: <strong>Jennys Art</strong> (1 Kapsel tgl., Mg: 3 Kapseln)</span>
+            </div>
+          </div>
         </div>
 
       </div>
-    </aside>
+    </header>
 
-    <!-- RIGHT COLUMN: Nutrients Dashboard & Controls -->
-    <main class="nutrients-main">
+    <!-- Main 2-Column Dashboard Grid -->
+    <div class="dashboard-body">
 
-      <!-- Top KPI Summary Banner -->
-      <section class="kpi-banner-grid" id="kpiBanner" aria-label="Nährstoff-Bedarfsdeckung Zusammenfassung">
-        <!-- Dynamically populated via JS -->
-      </section>
-
-      <!-- Search & Category Filters -->
-      <section class="controls-bar" aria-label="Nährstoff-Filter und Suche">
-        <div class="search-input-wrap">
-          <span class="search-icon">🔍</span>
-          <input 
-            type="text" 
-            id="nutrientSearch" 
-            class="search-input" 
-            placeholder="Nährstoff, Marke (z. B. Orthomol, Sunday Natural, Zinzino) oder Nutzen suchen..." 
-            autocomplete="off"
-            aria-label="Nährstoffe suchen"
-          >
-          <button class="search-clear-btn" id="searchClearBtn" aria-label="Suche zurücksetzen">✕</button>
+      <!-- LEFT COLUMN: Tägliche Supplements -->
+      <aside class="sidebar-column">
+        <div class="section-header-row">
+          <h2 class="section-title">Tägliche Supplements</h2>
+          <span class="count-pill" id="sidebarCountPill">9 Produkte</span>
         </div>
 
-        <div class="category-tabs" id="categoryTabs">
+        <!-- Daytime Filter Tabs -->
+        <div class="time-filter-row">
+          <button class="time-pill active" data-time="all">Alle</button>
+          <button class="time-pill" data-time="morning">☀️ Morgens</button>
+          <button class="time-pill" data-time="noon">🌤️ Mittags</button>
+          <button class="time-pill" data-time="evening">🌙 Abends</button>
+        </div>
+
+        <!-- Supplements Cards List -->
+        <div class="supplements-stack" id="supplementsList">
           <!-- Dynamically populated via JS -->
         </div>
-      </section>
+      </aside>
 
-      <!-- 2-Column Side-by-Side Nutrient Grid -->
-      <section class="nutrients-grid" id="nutrientsGrid" aria-label="Nährstoff-Details und Prozentbalken">
-        <!-- Dynamically populated via JS -->
-      </section>
+      <!-- RIGHT COLUMN: Nährstoff-Mengen & Tagesbedarf -->
+      <main class="main-column">
+        
+        <!-- Header with Title & Search Input -->
+        <div class="main-header-row">
+          <div class="main-title-wrap">
+            <h2 class="section-title">Nährstoff-Mengen &amp; Tagesbedarf</h2>
+            <p class="section-subtitle">Vergleich deiner Gesamtaufnahme mit den offiziellen D-A-CH / EFSA Referenzwerten.</p>
+          </div>
 
-    </main>
+          <!-- Search Bar -->
+          <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <input 
+              type="text" 
+              id="nutrientSearch" 
+              class="search-input" 
+              placeholder="Nährstoff suchen (z.B. Vitamin D3, Omega-3...)" 
+              autocomplete="off"
+              aria-label="Nährstoff suchen"
+            >
+            <button class="search-clear-btn" id="searchClearBtn" aria-label="Suche leeren">✕</button>
+          </div>
+        </div>
 
-  </div>
+        <!-- Category Tabs Row -->
+        <div class="category-tabs-row" id="categoryTabs">
+          <!-- Dynamically populated via JS -->
+        </div>
 
-  <!-- Interactive Nutrient Detail Modal / Drawer -->
-  <div class="modal-backdrop" id="nutrientModal" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="modal-content">
-      <button class="modal-close-btn" id="modalCloseBtn" aria-label="Schließen">✕</button>
-      <div id="modalBody">
-        <!-- Dynamically populated via JS -->
+        <!-- 2-Column Scientific Nutrient Grid -->
+        <div class="nutrients-grid" id="nutrientsGrid" aria-label="Nährstoff-Übersicht">
+          <!-- Dynamically populated via JS -->
+        </div>
+
+      </main>
+
+    </div>
+
+    <!-- Scientific Detail Modal -->
+    <div class="modal-backdrop" id="nutrientModal" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="modal-card">
+        <button class="modal-close-btn" id="modalCloseBtn" aria-label="Schließen">✕</button>
+        <div id="modalBody">
+          <!-- Dynamically populated via JS -->
+        </div>
       </div>
     </div>
+
+    <!-- Scientific Reference Footer -->
+    <footer class="app-footer">
+      <div>🌸 <strong>Jennys Nährstoffe</strong> &bull; Wissenschaftlich fundiert &bull; Stand: August 2026</div>
+      <div class="footer-ref-text">Referenzwerte: DGE / ÖGE / SGE (D-A-CH Referenzwerte) und EFSA (European Food Safety Authority)</div>
+    </footer>
+
   </div>
 
-  <!-- Footer -->
-  <footer class="app-footer">
-    <div>🌸 Jennys Nährstoffe &bull; Maßgeschneiderte Vitalitäts-Übersicht für Jenny</div>
-    <div class="footer-links">
-      <span class="footer-link">Referenzen: D-A-CH Referenzwerte (DGE/ÖGE/SGE) &amp; EFSA</span>
-    </div>
-  </footer>
-
-  <!-- Application Logic with Cache-Buster -->
-  <script type="module" src="js/app.js?v=2.2.0"></script>
+  <!-- Application Logic -->
+  <script type="module" src="js/app.js?v=3.0.0"></script>
 </body>
 </html>

@@ -1,9 +1,9 @@
 /**
- * Jennys Nährstoffe - Interactive Application Logic
- * Luxury Wellness Dashboard with dual dosage modes & comprehensive scientific evidence
+ * Jennys Nährstoffe - Scientific & Aesthetic Application Logic
+ * Clean, structured clinical wellness dashboard with dual dosage modes
  */
 
-import { JENNY_SUPPLEMENTS, NUTRIENTS_MASTER } from './data.js?v=2.2.0';
+import { JENNY_SUPPLEMENTS, NUTRIENTS_MASTER } from './data.js?v=3.0.0';
 
 // Application State
 let supplementsState = JSON.parse(JSON.stringify(JENNY_SUPPLEMENTS));
@@ -12,16 +12,16 @@ let currentSearchQuery = '';
 let currentSidebarTimeFilter = 'all';
 let currentDosageMode = localStorage.getItem('jenny_dosage_mode') || 'jenny'; // 'jenny' | 'manufacturer'
 
-// Format numbers cleanly
+// Clean number formatting
 function formatNumber(num) {
   if (num === undefined || num === null || isNaN(num)) return 0;
-  if (num >= 100) return Math.round(num);
-  if (num >= 10) return Number(num.toFixed(1));
-  if (num >= 1) return Number(num.toFixed(1));
-  return Number(num.toFixed(2));
+  if (num >= 100) return Math.round(num).toLocaleString('de-DE');
+  if (num >= 10) return Number(num.toFixed(1)).toLocaleString('de-DE');
+  if (num >= 1) return Number(num.toFixed(1)).toLocaleString('de-DE');
+  return Number(num.toFixed(2)).toLocaleString('de-DE');
 }
 
-// Calculate active nutrients based on active supplements & active dosage mode
+// Calculate active nutrients based on active supplements & dosage mode
 function calculateNutrientTotals() {
   const activeSupplements = supplementsState.filter(s => s.active);
 
@@ -62,58 +62,28 @@ function calculateNutrientTotals() {
   });
 }
 
-// Render KPI Summary Banner
-function renderKPIs(calculatedNutrients) {
+// Update Top KPI Summary Header
+function renderHeaderStats(calculatedNutrients) {
   const activeSupps = supplementsState.filter(s => s.active);
-  const totalUnits = activeSupps.reduce((acc, s) => {
-    const units = currentDosageMode === 'jenny' 
-      ? (s.unitsJenny || 1) 
-      : (s.unitsManufacturer || 1);
-    return acc + units;
-  }, 0);
-  
-  // Nutrients with >= 100% reference coverage
   const coveredCount = calculatedNutrients.filter(n => n.percent >= 100).length;
   const coveragePercent = Math.round((coveredCount / calculatedNutrients.length) * 100);
 
-  const kpiBanner = document.getElementById('kpiBanner');
-  if (!kpiBanner) return;
+  const suppCountEl = document.getElementById('statSuppCount');
+  const nutrientCountEl = document.getElementById('statNutrientCount');
+  const coveragePctEl = document.getElementById('statCoveragePct');
+  const coverageLabelEl = document.getElementById('statCoverageLabel');
 
-  const modeBadgeText = currentDosageMode === 'jenny' 
-    ? '🌸 Modus: Jennys Art' 
-    : '📋 Modus: Hersteller-Empfehlung';
-
-  kpiBanner.innerHTML = `
-    <div class="kpi-card">
-      <div class="kpi-icon-wrap">✨</div>
-      <div class="kpi-details">
-        <div class="kpi-value">${coveragePercent}%</div>
-        <div class="kpi-label">D-A-CH / EFSA Bedarfsdeckung (${coveredCount}/${calculatedNutrients.length} optimal)</div>
-      </div>
-    </div>
-    <div class="kpi-card kpi-sage">
-      <div class="kpi-icon-wrap">🌿</div>
-      <div class="kpi-details">
-        <div class="kpi-value">${activeSupps.length} Produkte</div>
-        <div class="kpi-label">${totalUnits} Einheiten täglich (${modeBadgeText})</div>
-      </div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-icon-wrap">🌸</div>
-      <div class="kpi-details">
-        <div class="kpi-value">${calculatedNutrients.length} Vitalstoffe</div>
-        <div class="kpi-label">5 Nährstoff-Kategorien analysiert</div>
-      </div>
-    </div>
-  `;
+  if (suppCountEl) suppCountEl.textContent = activeSupps.length;
+  if (nutrientCountEl) nutrientCountEl.textContent = calculatedNutrients.length;
+  if (coveragePctEl) coveragePctEl.textContent = `${coveragePercent}%`;
+  if (coverageLabelEl) coverageLabelEl.textContent = `${coveredCount}/${calculatedNutrients.length} OPTIMAL`;
 }
 
-// Update Mode Switcher Buttons & Sidebar Banner
+// Update Dosage Mode Switcher Buttons & Caption
 function updateDosageModeUI() {
   const btnJenny = document.getElementById('btnModeJenny');
   const btnManufacturer = document.getElementById('btnModeManufacturer');
-  const modeBannerIcon = document.getElementById('modeBannerIcon');
-  const modeBannerText = document.getElementById('modeBannerText');
+  const caption = document.getElementById('activeModeCaption');
 
   if (btnJenny && btnManufacturer) {
     if (currentDosageMode === 'jenny') {
@@ -125,13 +95,11 @@ function updateDosageModeUI() {
     }
   }
 
-  if (modeBannerIcon && modeBannerText) {
+  if (caption) {
     if (currentDosageMode === 'jenny') {
-      modeBannerIcon.textContent = '🌸';
-      modeBannerText.innerHTML = 'Aktiver Modus: <strong>Jennys Art</strong> (1 Kapsel / Mg: 3)';
+      caption.innerHTML = '<span>Modus: <strong>Jennys Art</strong> (1 Kapsel tgl., Mg: 3 Kapseln)</span>';
     } else {
-      modeBannerIcon.textContent = '📋';
-      modeBannerText.innerHTML = 'Aktiver Modus: <strong>Hersteller-Empfehlung</strong> (Standard)';
+      caption.innerHTML = '<span>Modus: <strong>Hersteller-Empfehlung</strong> (Offizielle Packungsangabe)</span>';
     }
   }
 }
@@ -139,38 +107,13 @@ function updateDosageModeUI() {
 // Render Left Sidebar: Daily Supplements
 function renderSupplementsSidebar() {
   const container = document.getElementById('supplementsList');
-  const countBadge = document.getElementById('sidebarCountBadge');
+  const countPill = document.getElementById('sidebarCountPill');
 
   if (!container) return;
 
   const activeSupps = supplementsState.filter(s => s.active);
-
-  // Update Count Badge
-  if (countBadge) {
-    countBadge.textContent = `${activeSupps.length} aktiv`;
-  }
-
-  // Update routine stat box by daytime
-  const morningCount = supplementsState.filter(s => s.timeGroup === 'morning' && s.active).length;
-  const noonCount = supplementsState.filter(s => s.timeGroup === 'noon' && s.active).length;
-  const eveningCount = supplementsState.filter(s => s.timeGroup === 'evening' && s.active).length;
-
-  const routineStatsBox = document.getElementById('routineStatsBox');
-  if (routineStatsBox) {
-    routineStatsBox.innerHTML = `
-      <div class="routine-stat-item">
-        <span class="routine-stat-num">${morningCount}</span>
-        <span class="routine-stat-label">☀️ Morgens</span>
-      </div>
-      <div class="routine-stat-item">
-        <span class="routine-stat-num">${noonCount}</span>
-        <span class="routine-stat-label">🌤️ Mittags</span>
-      </div>
-      <div class="routine-stat-item">
-        <span class="routine-stat-num">${eveningCount}</span>
-        <span class="routine-stat-label">🌙 Abends</span>
-      </div>
-    `;
+  if (countPill) {
+    countPill.textContent = `${activeSupps.length} Produkte`;
   }
 
   const filteredSupplements = supplementsState.filter(s => {
@@ -180,7 +123,7 @@ function renderSupplementsSidebar() {
 
   if (filteredSupplements.length === 0) {
     container.innerHTML = `
-      <div style="text-align:center; padding: 28px 12px; color: var(--text-muted); font-size: 13px;">
+      <div class="empty-sidebar-note">
         Keine Produkte für diesen Tageszeitpunkt hinterlegt.
       </div>
     `;
@@ -189,62 +132,54 @@ function renderSupplementsSidebar() {
 
   container.innerHTML = filteredSupplements.map(supp => {
     const imageHtml = supp.image 
-      ? `<img src="${supp.image}" alt="${supp.name}" onerror="this.parentElement.innerHTML='<div class=\'supplement-img-placeholder\'>${supp.icon || '🌸'}</div>'"/>`
-      : `<div class="supplement-img-placeholder">${supp.icon || '🌸'}</div>`;
+      ? `<img src="${supp.image}" alt="${supp.name}" class="product-thumb-img" onerror="this.parentElement.innerHTML='<span class=\'product-thumb-fallback\'>${supp.icon || '🌸'}</span>'"/>`
+      : `<span class="product-thumb-fallback">${supp.icon || '🌸'}</span>`;
 
     const dosageText = currentDosageMode === 'jenny' 
       ? (supp.dosageJenny || supp.dosage) 
       : (supp.dosageManufacturer || supp.dosage);
 
-    // Indicator if dosage differs between modes
-    const hasDivergence = (supp.unitsJenny !== undefined && supp.unitsManufacturer !== undefined && supp.unitsJenny !== supp.unitsManufacturer);
-    const divergenceBadge = hasDivergence
-      ? `<span class="divergence-tag" title="Dosierung unterscheidet sich zwischen Jennys Art und Hersteller-Empfehlung">${currentDosageMode === 'jenny' ? 'Jennys Dosierung' : 'Hersteller-Dosis'}</span>`
-      : '';
-
     return `
-      <div class="supplement-card ${!supp.active ? 'is-paused' : ''}" data-id="${supp.id}">
-        <div class="supplement-top-row">
-          <div class="supplement-img-wrap" title="${supp.name}">
+      <div class="product-card ${!supp.active ? 'is-paused' : ''}" data-id="${supp.id}">
+        <div class="product-card-top">
+          <div class="product-thumb-wrap">
             ${imageHtml}
           </div>
-          <div class="supplement-info">
-            <div class="supplement-brand">${supp.brand}</div>
-            <div class="supplement-name" title="${supp.name}">${supp.name}</div>
-            <div class="supplement-badges-row">
-              ${supp.badge ? `<span class="supplement-badge-pill">${supp.badge}</span>` : ''}
-              ${divergenceBadge}
+
+          <div class="product-header-info">
+            <div class="product-brand-row">
+              <span class="product-brand-label">${supp.brand}</span>
+              <span class="timing-pill">${supp.timing}</span>
             </div>
+            
+            <a href="${supp.url || '#'}" target="_blank" rel="noopener noreferrer" class="product-title-link" title="${supp.name}">
+              <span class="product-title-text">${supp.name}</span>
+              <span class="external-arrow">↗</span>
+            </a>
           </div>
         </div>
 
-        <div class="supplement-dosage-row">
-          <div class="dosage-timing">
-            <span>${supp.icon}</span>
-            <span>${supp.timing}</span>
+        <div class="product-card-bottom">
+          <div class="dosage-info-col">
+            <span class="dosage-text">${dosageText}</span>
           </div>
-          <div class="dosage-amount">${dosageText}</div>
-        </div>
 
-        ${supp.notes ? `<div class="supplement-note-text">${supp.notes}</div>` : ''}
-
-        <div class="supplement-bottom-bar">
-          <span class="supplement-status-tag ${supp.active ? 'active-tag' : 'paused-tag'}">
-            ${supp.active ? 'In Bilanz aktiv' : 'Pausiert'}
-          </span>
-
-          <button class="toggle-active-btn" data-toggle-id="${supp.id}" title="Produkt in Nährstoff-Bilanz an- oder abwählen">
-            ${supp.active ? 'Pausieren' : 'Aktivieren'}
-          </button>
+          <div class="product-meta-col">
+            ${supp.badge ? `<span class="product-badge-pill">${supp.badge}</span>` : ''}
+            <button class="toggle-pause-btn" data-toggle-id="${supp.id}" title="${supp.active ? 'In Nährstoff-Bilanz pausieren' : 'In Nährstoff-Bilanz aktivieren'}">
+              ${supp.active ? 'Pausieren' : 'Aktivieren'}
+            </button>
+          </div>
         </div>
       </div>
     `;
   }).join('');
 
-  // Event listeners for toggle active/pause
-  container.querySelectorAll('.toggle-active-btn').forEach(btn => {
+  // Event listeners for toggle pause/active
+  container.querySelectorAll('.toggle-pause-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
-      const id = e.target.getAttribute('data-toggle-id');
+      e.stopPropagation();
+      const id = e.currentTarget.getAttribute('data-toggle-id');
       const item = supplementsState.find(s => s.id === id);
       if (item) {
         item.active = !item.active;
@@ -254,34 +189,40 @@ function renderSupplementsSidebar() {
   });
 }
 
-// Render Category Filter Tabs
+// Render Category Filter Pills
 function renderCategoryTabs(calculatedNutrients) {
   const tabsContainer = document.getElementById('categoryTabs');
   if (!tabsContainer) return;
 
   const categories = [
-    { id: 'all', label: 'Alle Nährstoffe' },
-    { id: 'vitamins', label: '☀️ Vitamine' },
-    { id: 'minerals', label: '🌙 Mineralstoffe' },
-    { id: 'trace', label: '🩸 Spurenelemente' },
-    { id: 'vital', label: '💧 Fettsäuren & Vitalstoffe' },
-    { id: 'botanicals', label: '🍄 Adaptogene & Pilze' }
+    { id: 'all', label: 'Alle' },
+    { id: 'vitamins', label: 'Vitamine' },
+    { id: 'minerals-trace', label: 'Mineralstoffe & Spurenelemente' },
+    { id: 'vital', label: 'Omega-3 & Vitalstoffe' },
+    { id: 'botanicals', label: 'Adaptogene & Pilze' }
   ];
 
   tabsContainer.innerHTML = categories.map(cat => {
-    const count = cat.id === 'all' 
-      ? calculatedNutrients.length 
-      : calculatedNutrients.filter(n => n.category === cat.id).length;
+    let count = 0;
+    if (cat.id === 'all') {
+      count = calculatedNutrients.length;
+    } else if (cat.id === 'minerals-trace') {
+      count = calculatedNutrients.filter(n => n.category === 'minerals' || n.category === 'trace').length;
+    } else {
+      count = calculatedNutrients.filter(n => n.category === cat.id).length;
+    }
+
+    const isActive = activeCategory === cat.id;
 
     return `
-      <button class="category-tab ${activeCategory === cat.id ? 'active' : ''}" data-cat="${cat.id}">
+      <button class="category-pill-btn ${isActive ? 'active' : ''}" data-cat="${cat.id}">
         <span>${cat.label}</span>
-        <span class="category-tab-count">${count}</span>
+        <span class="category-pill-count">(${count})</span>
       </button>
     `;
   }).join('');
 
-  tabsContainer.querySelectorAll('.category-tab').forEach(tab => {
+  tabsContainer.querySelectorAll('.category-pill-btn').forEach(tab => {
     tab.addEventListener('click', (e) => {
       const target = e.currentTarget;
       activeCategory = target.getAttribute('data-cat');
@@ -291,7 +232,7 @@ function renderCategoryTabs(calculatedNutrients) {
   });
 }
 
-// Render Right Column: 2-Column Nutrient Grid
+// Render 2-Column Scientific Nutrient Cards Grid
 function renderNutrientsGrid(calculatedNutrients) {
   const grid = document.getElementById('nutrientsGrid');
   if (!grid) return;
@@ -299,7 +240,11 @@ function renderNutrientsGrid(calculatedNutrients) {
   // Filter by category
   let filtered = calculatedNutrients;
   if (activeCategory !== 'all') {
-    filtered = filtered.filter(n => n.category === activeCategory);
+    if (activeCategory === 'minerals-trace') {
+      filtered = filtered.filter(n => n.category === 'minerals' || n.category === 'trace');
+    } else {
+      filtered = filtered.filter(n => n.category === activeCategory);
+    }
   }
 
   // Filter by search query
@@ -316,10 +261,10 @@ function renderNutrientsGrid(calculatedNutrients) {
 
   if (filtered.length === 0) {
     grid.innerHTML = `
-      <div class="empty-state" style="grid-column: 1 / -1;">
+      <div class="empty-state-box">
         <div class="empty-state-icon">🔍</div>
         <div class="empty-state-title">Keine Nährstoffe gefunden</div>
-        <div class="empty-state-desc">Passe deinen Suchbegriff an oder wechsle den Kategorie-Filter.</div>
+        <div class="empty-state-desc">Passe deinen Suchbegriff an oder wähle eine andere Nährstoffkategorie.</div>
       </div>
     `;
     return;
@@ -329,69 +274,78 @@ function renderNutrientsGrid(calculatedNutrients) {
     const hasAmount = item.totalAmount > 0;
     
     // Status Pill Class & Fill Class
-    let pillClass = 'status-basic-pill';
-    let fillClass = 'fill-gold';
+    let pillClass = 'status-pill-standard';
+    let barColorClass = 'bar-fill-green';
+    
     if (item.percent >= 300) {
-      pillClass = 'status-high-pill';
-      fillClass = 'fill-coral';
+      pillClass = 'status-pill-high';
+      barColorClass = 'bar-fill-amber';
     } else if (item.percent >= 100) {
-      pillClass = 'status-optimal-pill';
-      fillClass = 'fill-sage';
+      pillClass = 'status-pill-optimal';
+      barColorClass = 'bar-fill-green';
+    } else if (item.percent > 0) {
+      pillClass = 'status-pill-optimal';
+      barColorClass = 'bar-fill-green';
     }
 
-    // Capped progress bar for visual luxury (max 100% width representation)
+    // Capped progress bar (visual representation max 100%)
     const barWidth = Math.min(item.percent, 100);
 
-    const sourceTagsHtml = item.sources.length > 0 
-      ? item.sources.map(s => `
-          <span class="source-tag" title="${s.supplementName} (${s.dosageText})">
-            <span>${s.brand}</span>
-            <span class="source-tag-amount">${formatNumber(s.amount)} ${s.unit}</span>
-          </span>
-        `).join('')
-      : `<span style="font-size: 11.5px; color: var(--text-muted); font-style: italic;">Aktuell keine Zufuhr über aktive Supplements</span>`;
+    // Unique brand tags
+    const uniqueBrands = Array.from(new Set(item.sources.map(s => s.brand)));
+    const brandTagsHtml = uniqueBrands.length > 0 
+      ? uniqueBrands.map(b => `<span class="brand-tag-pill">${b}</span>`).join('')
+      : `<span class="brand-tag-pill empty-tag">Inaktiv</span>`;
+
+    const formattedAmount = formatNumber(item.totalAmount);
 
     return `
-      <div class="nutrient-card" data-nutrient-id="${item.id}" title="Klicken für wissenschaftliche Details &amp; Fachinformationen">
+      <div class="nutrient-scientific-card" data-nutrient-id="${item.id}" title="Klicken für biochemische Details &amp; wissenschaftliche Studien">
+        
+        <!-- Card Header: Name + Subtitle on Left, Brand Pills on Right -->
         <div class="nutrient-card-header">
-          <div class="nutrient-title-group">
-            <div class="nutrient-emoji-badge">${item.icon || '✨'}</div>
-            <div class="nutrient-name-wrap">
-              <div class="nutrient-name">${item.name}</div>
-              <div class="nutrient-sub">${item.subTitle || item.categoryName}</div>
-            </div>
+          <div class="nutrient-title-col">
+            <h3 class="nutrient-card-title">${item.name}</h3>
+            <span class="nutrient-card-sub">${item.subTitle || item.categoryName}</span>
           </div>
-          <div class="nutrient-amount-badge">
-            <div class="nutrient-amount-val">${formatNumber(item.totalAmount)} ${item.unit}</div>
-            <span class="nutrient-percent-pill ${pillClass}">
-              ${hasAmount ? `${item.percent}% Referenz` : '0%'}
+
+          <div class="nutrient-brands-col">
+            ${brandTagsHtml}
+          </div>
+        </div>
+
+        <!-- Metric Row: Big Bold Value on Left, Percentage Pill on Right -->
+        <div class="nutrient-metric-row">
+          <div class="nutrient-value-display">
+            <span class="val-number">${formattedAmount}</span>
+            <span class="val-unit">${item.unit}</span>
+          </div>
+
+          <div class="nutrient-status-display">
+            <span class="status-reference-pill ${pillClass}">
+              ${hasAmount ? `${formatNumber(item.percent)}% D-A-CH` : '0% D-A-CH'}
             </span>
           </div>
         </div>
 
-        <div class="progress-container">
-          <div class="progress-track">
-            <div class="progress-fill ${fillClass}" style="width: ${barWidth}%"></div>
-          </div>
-          <div class="progress-labels">
-            <span class="ref-label">Referenz: ${item.refText}</span>
-            <span>${item.percent}%</span>
+        <!-- Solid Continuous Progress Line -->
+        <div class="nutrient-progress-wrap">
+          <div class="nutrient-progress-bar">
+            <div class="nutrient-progress-fill ${barColorClass}" style="width: ${hasAmount ? barWidth : 0}%"></div>
           </div>
         </div>
 
-        <div class="source-tags-row">
-          ${sourceTagsHtml}
-        </div>
-
+        <!-- Card Footer: Reference text on Right -->
         <div class="nutrient-card-footer">
-          <span class="card-learn-more-link">Wissenschaftliche Analyse &amp; Quellen ↗</span>
+          <span class="reference-note-text">Referenz: <strong>${item.refText}</strong></span>
         </div>
+
       </div>
     `;
   }).join('');
 
-  // Attach modal trigger
-  grid.querySelectorAll('.nutrient-card').forEach(card => {
+  // Attach modal click listeners
+  grid.querySelectorAll('.nutrient-scientific-card').forEach(card => {
     card.addEventListener('click', () => {
       const id = card.getAttribute('data-nutrient-id');
       const nutrient = calculatedNutrients.find(n => n.id === id);
@@ -400,7 +354,7 @@ function renderNutrientsGrid(calculatedNutrients) {
   });
 }
 
-// Modal Detail View with Comprehensive Scientific Information
+// Scientific Detail Modal View
 function openNutrientModal(nutrient) {
   const modal = document.getElementById('nutrientModal');
   const modalBody = document.getElementById('modalBody');
@@ -414,11 +368,11 @@ function openNutrientModal(nutrient) {
   const functionsHtml = (nutrient.functions && nutrient.functions.length > 0)
     ? `
       <div class="modal-section">
-        <div class="modal-section-title">🧬 Biologische Hauptfunktionen &amp; EFSA-Health Claims</div>
-        <ul class="modal-functions-list">
+        <div class="modal-section-title">🧬 Biologische Hauptfunktionen &amp; EFSA-Claims</div>
+        <ul class="modal-checklist">
           ${nutrient.functions.map(fn => `
-            <li class="modal-function-item">
-              <span class="fn-bullet-icon">✦</span>
+            <li class="modal-check-item">
+              <span class="check-bullet">✓</span>
               <span>${fn}</span>
             </li>
           `).join('')}
@@ -430,103 +384,98 @@ function openNutrientModal(nutrient) {
   // Build Sources List HTML
   const sourcesListHtml = nutrient.sources.length > 0
     ? nutrient.sources.map(s => `
-        <div class="modal-source-item">
-          <div class="modal-source-info-wrap">
-            ${s.image ? `<img src="${s.image}" class="modal-source-thumb" alt="${s.supplementName}"/>` : ''}
+        <div class="modal-source-row">
+          <div class="source-left">
+            ${s.image ? `<img src="${s.image}" class="source-thumb" alt="${s.supplementName}"/>` : ''}
             <div>
-              <div class="modal-source-name">${s.supplementName}</div>
-              <div style="font-size: 11.5px; color: var(--text-muted);">${s.brand} &bull; ${s.dosageText}</div>
+              <div class="source-name">${s.supplementName}</div>
+              <div class="source-meta">${s.brand} &bull; ${s.dosageText}</div>
             </div>
           </div>
-          <div class="modal-source-val">${formatNumber(s.amount)} ${s.unit}</div>
+          <div class="source-amount">${formatNumber(s.amount)} ${s.unit}</div>
         </div>
       `).join('')
-    : `<div style="font-size: 13px; color: var(--text-muted); padding: 10px 0;">Keine aktiven Produkte liefern aktuell diesen Nährstoff.</div>`;
+    : `<div class="source-empty-note">Keine aktiven Produkte liefern aktuell diesen Nährstoff.</div>`;
 
   modalBody.innerHTML = `
-    <div class="modal-header">
-      <div class="modal-icon">${nutrient.icon || '✨'}</div>
-      <div class="modal-title-wrap">
-        <div class="modal-category-badge">${nutrient.categoryName}</div>
-        <h2 class="modal-title">${nutrient.name}</h2>
-        <div class="modal-subtitle">${nutrient.subTitle || ''} &bull; <span class="modal-mode-pill">${modeDesc}</span></div>
+    <div class="modal-header-block">
+      <div class="modal-header-left">
+        <span class="modal-kicker">${nutrient.categoryName}</span>
+        <h2 class="modal-main-title">${nutrient.name}</h2>
+        <p class="modal-main-sub">${nutrient.subTitle || ''} &bull; <span class="modal-mode-badge">${modeDesc}</span></p>
       </div>
     </div>
 
     <!-- 4-Stat Box Grid -->
-    <div class="modal-grid-stats">
-      <div class="modal-stat-box">
-        <div class="modal-stat-label">Tagesdosis (${currentDosageMode === 'jenny' ? 'Jennys Art' : 'Hersteller'})</div>
-        <div class="modal-stat-val" style="color: var(--rose-gold-dark);">
-          ${formatNumber(nutrient.totalAmount)} ${nutrient.unit}
-        </div>
+    <div class="modal-stat-matrix">
+      <div class="stat-matrix-card">
+        <span class="stat-matrix-label">Tagesdosis (${currentDosageMode === 'jenny' ? 'Jennys Art' : 'Hersteller'})</span>
+        <span class="stat-matrix-val highlight-val">${formatNumber(nutrient.totalAmount)} ${nutrient.unit}</span>
       </div>
-      <div class="modal-stat-box">
-        <div class="modal-stat-label">Referenz-Deckung</div>
-        <div class="modal-stat-val" style="color: var(--sage-dark);">
-          ${nutrient.percent}%
-        </div>
+      <div class="stat-matrix-card">
+        <span class="stat-matrix-label">D-A-CH Referenz-Deckung</span>
+        <span class="stat-matrix-val green-val">${formatNumber(nutrient.percent)}%</span>
       </div>
-      <div class="modal-stat-box">
-        <div class="modal-stat-label">D-A-CH Referenz</div>
-        <div class="modal-stat-val" style="font-size: 13.5px;">${nutrient.refText}</div>
+      <div class="stat-matrix-card">
+        <span class="stat-matrix-label">Offizieller Referenzwert</span>
+        <span class="stat-matrix-val text-val">${nutrient.refText}</span>
       </div>
-      <div class="modal-stat-box">
-        <div class="modal-stat-label">Optimalbereich</div>
-        <div class="modal-stat-val" style="font-size: 13.5px;">${nutrient.optimalRange || 'Individuell'}</div>
+      <div class="stat-matrix-card">
+        <span class="stat-matrix-label">Optimalbereich</span>
+        <span class="stat-matrix-val text-val">${nutrient.optimalRange || 'Individuell'}</span>
       </div>
     </div>
 
     <!-- Section 1: Functions -->
     ${functionsHtml}
 
-    <!-- Section 2: Benefits for Jenny -->
+    <!-- Section 2: Benefits -->
     <div class="modal-section">
       <div class="modal-section-title">🌸 Bedeutung für Jennys Vitalität &amp; Wohlbefinden</div>
-      <div class="modal-section-text">${nutrient.benefits || 'Wichtiger Bestandteil für Wohlbefinden und Vitalität.'}</div>
+      <div class="modal-text-box">${nutrient.benefits || 'Wichtiger Bestandteil für Zellstoffwechsel und Wohlbefinden.'}</div>
     </div>
 
     <!-- Section 3: Deficiency Signs -->
     ${nutrient.deficiencySigns ? `
       <div class="modal-section">
         <div class="modal-section-title">⚠️ Mögliche Anzeichen einer Unterversorgung (Mangel)</div>
-        <div class="modal-section-text warning-text">${nutrient.deficiencySigns}</div>
+        <div class="modal-text-box warning-box">${nutrient.deficiencySigns}</div>
       </div>
     ` : ''}
 
-    <!-- Section 4: Bioavailability & Intake Tips -->
+    <!-- Section 4: Bioavailability Tips -->
     ${nutrient.intakeTips ? `
       <div class="modal-section">
         <div class="modal-section-title">💡 Bioverfügbarkeit &amp; Einnahme-Tipps (Synergien)</div>
-        <div class="modal-section-text tip-text">${nutrient.intakeTips}</div>
+        <div class="modal-text-box tip-box">${nutrient.intakeTips}</div>
       </div>
     ` : ''}
 
     <!-- Section 5: EFSA Upper Limit -->
     <div class="modal-section">
       <div class="modal-section-title">🛡️ EFSA Sicherheitsbereich (Tolerable Upper Intake Level)</div>
-      <div class="modal-section-text">${nutrient.efsaUpperLimit || 'Keine toxischen Obergrenzen bei physiologischer Einnahme.'}</div>
+      <div class="modal-text-box">${nutrient.efsaUpperLimit || 'Keine toxischen Obergrenzen bei physiologischer Einnahme.'}</div>
     </div>
 
     <!-- Section 6: Sources in Supplements -->
     <div class="modal-section">
       <div class="modal-section-title">📦 Enthalten in Jennys aktuellen Supplements</div>
-      <div class="modal-sources-list">
+      <div class="modal-sources-stack">
         ${sourcesListHtml}
       </div>
     </div>
 
     <!-- Section 7: Verified External Scientific Source Link -->
     ${nutrient.learnMoreUrl ? `
-      <div class="modal-section modal-reference-section">
+      <div class="modal-section">
         <div class="modal-section-title">🔗 Fundierte wissenschaftliche Fachquelle</div>
-        <div class="modal-link-card">
-          <div class="modal-link-info">
-            <span class="modal-link-source-badge">Offizielle Referenz</span>
-            <div class="modal-link-title">${nutrient.learnMoreSource || 'Wissenschaftliche Quelle'}</div>
-            <div class="modal-link-desc">Detailinformationen, klinische Studien und Referenzwerte der Behörden.</div>
+        <div class="modal-ref-link-card">
+          <div class="ref-link-info">
+            <span class="ref-badge">Offizielle Behörden- &amp; Studienreferenz</span>
+            <div class="ref-title">${nutrient.learnMoreSource || 'Wissenschaftliche Quelle'}</div>
+            <div class="ref-desc">Detailinformationen, klinische Studien und Referenzwerte der Behörden.</div>
           </div>
-          <a href="${nutrient.learnMoreUrl}" target="_blank" rel="noopener noreferrer" class="modal-external-btn">
+          <a href="${nutrient.learnMoreUrl}" target="_blank" rel="noopener noreferrer" class="ref-open-btn">
             Fachquelle öffnen ↗
           </a>
         </div>
@@ -542,17 +491,17 @@ function closeNutrientModal() {
   if (modal) modal.classList.remove('is-open');
 }
 
-// Full App Render
+// Full Application Render
 function renderApp() {
   const calculatedNutrients = calculateNutrientTotals();
   updateDosageModeUI();
-  renderKPIs(calculatedNutrients);
+  renderHeaderStats(calculatedNutrients);
   renderSupplementsSidebar();
   renderCategoryTabs(calculatedNutrients);
   renderNutrientsGrid(calculatedNutrients);
 }
 
-// Mobile Header Shrink on Scroll
+// Mobile Header Scroll Listener
 function initHeaderScrollListener() {
   const headerEl = document.getElementById('mainHeader');
   if (!headerEl) return;
@@ -562,7 +511,7 @@ function initHeaderScrollListener() {
   window.addEventListener('scroll', () => {
     if (!ticking) {
       window.requestAnimationFrame(() => {
-        if (window.scrollY > 25) {
+        if (window.scrollY > 30) {
           headerEl.classList.add('is-scrolled');
         } else {
           headerEl.classList.remove('is-scrolled');
@@ -574,7 +523,7 @@ function initHeaderScrollListener() {
   }, { passive: true });
 }
 
-// Initial Setup & Event Listeners
+// Initial Setup & Event Handlers
 document.addEventListener('DOMContentLoaded', () => {
   initHeaderScrollListener();
 
@@ -602,17 +551,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Sidebar Time Filter Chips
-  document.querySelectorAll('.time-chip').forEach(chip => {
-    chip.addEventListener('click', (e) => {
-      document.querySelectorAll('.time-chip').forEach(c => c.classList.remove('active'));
+  // Time Filter Tabs
+  document.querySelectorAll('.time-pill').forEach(pill => {
+    pill.addEventListener('click', (e) => {
+      document.querySelectorAll('.time-pill').forEach(p => p.classList.remove('active'));
       e.currentTarget.classList.add('active');
       currentSidebarTimeFilter = e.currentTarget.getAttribute('data-time');
       renderSupplementsSidebar();
     });
   });
 
-  // Search Input Handlers
+  // Search Input
   const searchInput = document.getElementById('nutrientSearch');
   const searchClearBtn = document.getElementById('searchClearBtn');
 
@@ -635,7 +584,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Modal Close Handlers
+  // Modal Close Events
   const modal = document.getElementById('nutrientModal');
   const modalCloseBtn = document.getElementById('modalCloseBtn');
 
