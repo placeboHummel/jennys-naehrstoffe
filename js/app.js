@@ -1,10 +1,22 @@
 /**
  * Jennys Nährstoffe - Application Logic
  * Gestaltet nach dem Blueprint & Design-System von Djalals Nährstoffe
- * Wissenschaftlich, hochleserlich mit warmem Amber/Orange-Farbschema
+ * Wissenschaftlich, hochleserlich mit warmem Amber/Orange-Farbschema & stilvoller grüner Bedarfsdeckung
  */
 
-import { JENNY_SUPPLEMENTS, NUTRIENTS_MASTER } from './data.js?v=3.2.0';
+import { JENNY_SUPPLEMENTS, NUTRIENTS_MASTER } from './data.js?v=3.4.0';
+
+const SHORT_PRODUCT_NAMES = {
+  'orthomol-vital-f': 'Orthomol Vital f',
+  'orthomol-vit-c-depo': 'Orthomol Vit. C',
+  'sunday-omega3-komplex': 'Sunday Omega-3',
+  'zinzino-essent-plus': 'Zinzino Essent+',
+  'sunday-d3-k2-depot': 'Sunday D3+K2',
+  'sunday-ashwagandha-ksm66': 'Sunday Ashwagandha',
+  'sunday-reishi-extrakt': 'Sunday Reishi',
+  'sunday-chaga-extrakt': 'Sunday Chaga',
+  'sports-magnesium-bisglycinat': 'Sports & Health Mg'
+};
 
 document.addEventListener('DOMContentLoaded', () => {
   // State
@@ -59,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
             sources.push({
               supplementId: supp.id,
               supplementName: supp.name,
+              shortName: SHORT_PRODUCT_NAMES[supp.id] || supp.name,
               brand: supp.brand,
               amount: amount,
               unit: nutrient.unit,
@@ -76,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       let sourceTag = 'Nicht abgedeckt';
       if (sources.length === 1) {
-        sourceTag = sources[0].brand;
+        sourceTag = sources[0].shortName || sources[0].brand;
       } else if (sources.length > 1) {
         sourceTag = `${sources.length} Quellen`;
       }
@@ -96,18 +109,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1. Render Header KPI Stats
   function renderHeaderStats(calculatedNutrients) {
     const activeSupps = supplementsState.filter(s => s.active);
-    const coveredCount = calculatedNutrients.filter(n => n.percent >= 100).length;
-    const coveragePercent = Math.round((coveredCount / calculatedNutrients.length) * 100);
-
     const suppCountEl = document.getElementById('statSuppCount');
     const nutrientCountEl = document.getElementById('statNutrientCount');
-    const coveragePctEl = document.getElementById('statCoveragePct');
-    const coverageLabelEl = document.getElementById('statCoverageLabel');
 
     if (suppCountEl) suppCountEl.textContent = activeSupps.length;
     if (nutrientCountEl) nutrientCountEl.textContent = calculatedNutrients.length;
-    if (coveragePctEl) coveragePctEl.textContent = `${coveragePercent}%`;
-    if (coverageLabelEl) coverageLabelEl.textContent = `${coveredCount}/${calculatedNutrients.length} Optimal`;
   }
 
   // 2. Render Dosage Mode UI
@@ -381,10 +387,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const isEfsa = (item.refText || '').includes('EFSA');
       const isMissing = item.totalAmount === 0;
       const percentBadgeText = isMissing ? '0% • Fehlt' : `${item.percent}% ${isEfsa ? 'EFSA' : 'D-A-CH'}`;
-      const pillClass = isMissing ? 'nut-percent-pill text-orange-stat' : 'nut-percent-pill';
+      const pillClass = isMissing ? 'nut-percent-pill is-missing' : 'nut-percent-pill';
+
+      const refTagText = item.refVal > 0 
+        ? `Ref: ${formatNumber(item.refVal)} ${item.unit}` 
+        : `Ref: ${item.refText}`;
 
       return `
-        <div class="nut-card" data-nutrient-id="${item.id}" role="button" tabindex="0">
+        <div class="nut-card ${isMissing ? 'is-missing' : ''}" data-nutrient-id="${item.id}" role="button" tabindex="0">
           <div class="nut-top-row">
             <div class="nut-title-box">
               <div class="nut-name-row">
@@ -399,7 +409,7 @@ document.addEventListener('DOMContentLoaded', () => {
               </div>
               <span class="nut-extra">${item.subTitle || item.categoryName}</span>
             </div>
-            <span class="nut-source-tag">${item.sourceTag}</span>
+            <span class="nut-ref-tag" title="${item.refText}">${refTagText}</span>
           </div>
 
           <div class="nut-amount-row">
@@ -411,8 +421,17 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="nut-progress-fill" style="width: ${barWidth}%;"></div>
           </div>
 
-          <div class="nut-ref-sub">
-            Referenz: <strong>${item.refText}</strong>
+          <!-- Bottom Sources Breakdown Strip -->
+          <div class="nut-sources-strip">
+            ${item.sources && item.sources.length > 0
+              ? item.sources.map(s => `
+                  <span class="nut-source-chip" title="${s.supplementName} (${s.brand})">
+                    <span class="source-chip-name">${s.shortName}</span>
+                    <strong class="source-chip-val">${formatNumber(s.amount)} ${s.unit}</strong>
+                  </span>
+                `).join('')
+              : `<span class="nut-source-chip is-missing">Keine direkte Supplement-Quelle</span>`
+            }
           </div>
         </div>
       `;
@@ -517,7 +536,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="modal-metric-strip">
               <div class="metric-tile">
                 <span class="metric-lbl">Aktuelle Tagesdosis</span>
-                <span class="metric-val text-orange-stat">${item.amountFormatted}</span>
+                <span class="metric-val text-emerald-stat">${item.amountFormatted}</span>
               </div>
               <div class="metric-tile">
                 <span class="metric-lbl">Offizielle Referenz</span>
@@ -525,7 +544,7 @@ document.addEventListener('DOMContentLoaded', () => {
               </div>
               <div class="metric-tile">
                 <span class="metric-lbl">Tagesdeckung</span>
-                <span class="metric-val text-orange-stat">${item.percent}%</span>
+                <span class="metric-val text-emerald-stat">${item.percent}%</span>
               </div>
             </div>
 
