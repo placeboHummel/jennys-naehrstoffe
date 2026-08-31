@@ -1,6 +1,6 @@
 /* ==========================================================================
-   JENNYS NÄHRSTOFFE - WISSENSCHAFTLICH, HOCHLESERLICH & MODERN (AMBER/ORANGE THEME)
-   Gestaltet nach dem Blueprint von Djalals Nährstoffe mit Jennys Farbton (Warm Orange)
+   JENNYS NÄHRSTOFFE - WISSENSCHAFTLICH, HOCHLESERLICH & MODERN
+   Orange Akzente auf der Seite + Stylisher grüner Nährstoff-Verlauf (Bedarfsdeckung)
    ========================================================================== */
 
 :root {
@@ -28,13 +28,17 @@
   --orange-border: #fed7aa;   /* Orange 200 */
   --orange-glow: rgba(234, 88, 12, 0.16);
 
+  /* Stylish Emerald / Green Palette for Nutrients & Coverage */
+  --emerald-main: #059669;
+  --emerald-bright: #10b981;
+  --emerald-light: #34d399;
+  --emerald-bg: #ecfdf5;
+  --emerald-border: #a7f3d0;
+
   /* Secondary Accents */
   --blue-main: #0284c7;
   --blue-bg: #f0f9ff;
   --blue-border: #bae6fd;
-
-  --emerald-main: #059669;
-  --emerald-bg: #ecfdf5;
 
   /* Shadows & Radii */
   --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.03);
@@ -127,45 +131,16 @@ body {
   gap: 8px;
 }
 
-.brand-top-row {
+.brand-title-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.badge-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--orange-bg);
-  color: var(--orange-dark);
-  border: 1px solid var(--orange-border);
-  font-size: 0.76rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  padding: 4px 12px;
-  border-radius: var(--radius-pill);
-  width: fit-content;
-}
-
-.badge-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background-color: var(--orange-main);
-  animation: pulseDot 2s infinite ease-in-out;
-}
-
-@keyframes pulseDot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.85); }
+  gap: 14px;
 }
 
 .jenny-avatar-wrap {
-  width: 46px;
-  height: 46px;
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
   border-radius: 50%;
   border: 2px solid var(--orange-border);
   box-shadow: var(--shadow-sm);
@@ -191,7 +166,7 @@ body {
 
 .title {
   font-family: var(--font-heading);
-  font-size: 2rem;
+  font-size: 1.85rem;
   font-weight: 800;
   letter-spacing: -0.03em;
   color: var(--text-main);
@@ -199,9 +174,52 @@ body {
 }
 
 .subtitle {
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   color: var(--text-secondary);
   line-height: 1.45;
+}
+
+/* ==========================================================================
+   QUICK STATS CARD (2 TILES - MATCHING DJALAL)
+   ========================================================================== */
+.stats-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  padding: 12px 24px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.stat-num {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1;
+}
+
+.stat-lbl {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 28px;
+  background: var(--border-light);
 }
 
 /* ==========================================================================
@@ -317,53 +335,6 @@ body {
 
 .dosage-caption-text strong {
   color: var(--text-main);
-}
-
-/* ==========================================================================
-   QUICK STATS CARD (3 TILES)
-   ========================================================================== */
-.stats-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  background: var(--bg-card);
-  border: 1px solid var(--border-light);
-  padding: 12px 16px;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-}
-
-.stat-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.stat-num {
-  font-family: var(--font-heading);
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: var(--text-main);
-  line-height: 1;
-}
-
-.stat-lbl {
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  font-weight: 600;
-  text-transform: uppercase;
-  margin-top: 4px;
-}
-
-.stat-divider {
-  width: 1px;
-  height: 28px;
-  background: var(--border-light);
-}
-
-.text-orange-stat {
-  color: var(--orange-main) !important;
 }
 
 /* ==========================================================================
@@ -570,8 +541,7 @@ body {
   color: var(--orange-dark);
   letter-spacing: 0.04em;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  flex-shrink: 0;
 }
 
 .supp-timing-badge {
@@ -599,7 +569,7 @@ body {
   align-items: center;
   padding-top: 10px;
   border-top: 1px solid var(--border-light);
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   gap: 8px;
 }
 
@@ -610,8 +580,15 @@ body {
 .supp-dose-val {
   color: var(--text-secondary);
   font-weight: 600;
-  font-size: 0.8rem;
-  line-height: 1.3;
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
+.supp-badge-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .supp-badge {
@@ -623,6 +600,7 @@ body {
   padding: 2px 8px;
   border-radius: var(--radius-sm);
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .supp-select-indicator {
@@ -686,7 +664,7 @@ body {
 
 .search-box {
   position: relative;
-  min-width: 320px;
+  min-width: 280px;
   flex: 1;
   max-width: 440px;
 }
@@ -877,7 +855,7 @@ body {
 .nutrients-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
+  gap: 14px;
 }
 
 .nut-card {
@@ -904,7 +882,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 12px;
+  gap: 10px;
 }
 
 .nut-title-box {
@@ -982,12 +960,13 @@ body {
   line-height: 1;
 }
 
+/* Percent Badge Pill with Stylish Green Bedarfsdeckung */
 .nut-percent-pill {
   font-size: 0.78rem;
   font-weight: 700;
-  color: var(--orange-dark);
-  background: var(--orange-bg);
-  border: 1px solid var(--orange-border);
+  color: var(--emerald-main);
+  background: var(--emerald-bg);
+  border: 1px solid var(--emerald-border);
   padding: 3px 9px;
   border-radius: var(--radius-pill);
   display: inline-flex;
@@ -995,7 +974,7 @@ body {
   gap: 4px;
 }
 
-/* Progress Bar */
+/* Stylish Green Progress Bar with Smooth Vibrant Gradient */
 .nut-progress-track {
   height: 6px;
   background: #e2e8f0;
@@ -1006,9 +985,10 @@ body {
 
 .nut-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #fb923c, #ea580c);
+  background: linear-gradient(90deg, #34d399 0%, #10b981 50%, #059669 100%);
   border-radius: var(--radius-pill);
   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(16, 185, 129, 0.35);
 }
 
 .nut-ref-sub {
@@ -1230,8 +1210,8 @@ body {
 }
 
 .check-bullet {
-  background: #ffedd5;
-  color: var(--orange-dark);
+  background: #dcfce7;
+  color: #15803d;
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -1299,7 +1279,7 @@ body {
 .modal-source-amount {
   font-size: 0.78rem;
   font-weight: 700;
-  color: var(--orange-dark);
+  color: var(--emerald-main);
   margin-top: 2px;
 }
 

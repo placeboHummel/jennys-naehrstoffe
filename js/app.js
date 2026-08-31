@@ -4,7 +4,7 @@
  * Wissenschaftlich, hochleserlich mit warmem Amber/Orange-Farbschema
  */
 
-import { JENNY_SUPPLEMENTS, NUTRIENTS_MASTER } from './data.js?v=3.1.0';
+import { JENNY_SUPPLEMENTS, NUTRIENTS_MASTER } from './data.js?v=3.2.0';
 
 document.addEventListener('DOMContentLoaded', () => {
   // State
@@ -169,8 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
              data-id="${supp.id}" 
              role="button" 
              tabindex="0" 
-             aria-pressed="${isSelected}"
-             title="${isSelected ? 'Klicken, um Filter aufzuheben' : 'Klicken, um Nährstoffe dieses Supplements zu filtern'}">
+             aria-pressed="${isSelected}">
           <div class="supp-card-body">
             <div class="supp-img-box">
               ${imageHtml}
@@ -185,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
           <div class="supp-dose-box">
             <span class="supp-dose-val">${dosageText}</span>
-            <div style="display: flex; align-items: center; gap: 8px;">
+            <div class="supp-badge-group">
               ${supp.badge ? `<span class="supp-badge">${supp.badge}</span>` : ''}
               <span class="supp-select-indicator">
                 ${isSelected 
@@ -385,7 +384,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const pillClass = isMissing ? 'nut-percent-pill text-orange-stat' : 'nut-percent-pill';
 
       return `
-        <div class="nut-card" data-nutrient-id="${item.id}" role="button" tabindex="0" title="Klicken für wissenschaftliche Details">
+        <div class="nut-card" data-nutrient-id="${item.id}" role="button" tabindex="0">
           <div class="nut-top-row">
             <div class="nut-title-box">
               <div class="nut-name-row">
