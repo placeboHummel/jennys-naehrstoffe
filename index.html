@@ -2,185 +2,168 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-  <title>Jennys Nährstoffe – Wissenschaftliche Supplement- &amp; Nährstoffbilanz</title>
-  
-  <!-- Cache Control Meta Tags -->
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jennys Nährstoffe – Wissenschaftliche Supplement- & Nährstoffbilanz</title>
+  <meta name="description" content="Wissenschaftliche Übersicht von Jennys täglichen Nahrungsergänzungsmitteln und Nährstoffbedarfsdeckung nach D-A-CH und EFSA Referenzwerten.">
 
-  <!-- Meta & SEO -->
-  <meta name="description" content="Wissenschaftliches, minimalistisches Dashboard für Jennys tägliche Nahrungsergänzungsmittel und Mikronährstoff-Bedarfsdeckung nach D-A-CH und EFSA Referenzwerten.">
-  <meta name="theme-color" content="#F8F9FA">
-
-  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <!-- Google Fonts: Inter & Plus Jakarta Sans for maximum legibility -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Custom Stylesheet -->
-  <link rel="stylesheet" href="css/style.css?v=3.0.0">
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/images/favicon.svg">
+
+  <link rel="stylesheet" href="css/style.css?v=3.1.0">
 </head>
 <body>
+  <div class="page-container">
+    <div class="app-layout">
 
-  <!-- App Wrapper -->
-  <div class="app-layout">
-
-    <!-- Top Header / Hero Section -->
-    <header class="app-header" id="mainHeader">
-      <div class="header-inner">
+      <!-- ==================== LEFT COLUMN: SIDEBAR & ROUTINE ==================== -->
+      <aside class="sidebar-col">
         
-        <!-- Left: Brand, Title & 3-Stat KPI Widget -->
-        <div class="header-brand-block">
-          <div class="header-brand-top">
-            <div class="badge-routine">
+        <!-- Brand Header Box -->
+        <div class="brand-box">
+          <div class="brand-top-row">
+            <div class="badge-pill">
               <span class="badge-dot"></span>
-              <span>JENNYS ROUTINE</span>
+              <span>Jennys Routine</span>
             </div>
-            <div class="jenny-avatar-mini" title="Jenny">
-              <img src="assets/jenny_avatar.jpg" alt="Jenny" class="avatar-img">
-            </div>
-          </div>
-
-          <h1 class="page-title">Jennys Nährstoffe</h1>
-          <p class="page-subtitle">Alle Vitamine, Mineralstoffe und Dosierungen deiner täglichen Einnahme.</p>
-
-          <!-- 3-Stat Summary Box -->
-          <div class="stats-summary-widget" id="headerStatsWidget">
-            <div class="stat-cell">
-              <span class="stat-num" id="statSuppCount">9</span>
-              <span class="stat-label">SUPPLEMENTS</span>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-cell">
-              <span class="stat-num" id="statNutrientCount">30</span>
-              <span class="stat-label">NÄHRSTOFFE</span>
-            </div>
-            <div class="stat-divider"></div>
-            <div class="stat-cell">
-              <span class="stat-num highlight-stat" id="statCoveragePct">100%</span>
-              <span class="stat-label" id="statCoverageLabel">BEDARFSDECKUNG</span>
+            <div class="jenny-avatar-wrap" title="Jenny">
+              <img src="assets/jenny_avatar.jpg" alt="Jenny" class="jenny-avatar-img">
             </div>
           </div>
+          <h1 class="title">Jennys Nährstoffe</h1>
+          <p class="subtitle">Alle Vitamine, Mineralstoffe und Dosierungen deiner täglichen Einnahme.</p>
         </div>
 
-        <!-- Right: Dosage Mode Switcher -->
-        <div class="header-controls-block">
-          <div class="dosage-switcher-card">
-            <div class="switcher-label-row">
-              <span class="switcher-badge-dot"></span>
-              <span class="switcher-heading">Dosierungs-Modus</span>
-            </div>
+        <!-- Dosage Mode Switcher Card -->
+        <div class="dosage-card">
+          <div class="dosage-header-row">
+            <span class="dosage-indicator-dot"></span>
+            <span class="dosage-heading">Dosierungs-Modus</span>
+          </div>
 
-            <div class="dosage-mode-switch-wrap" role="group" aria-label="Dosierungs-Modus wählen">
-              <button class="dosage-switch-btn active" id="btnModeJenny" data-mode="jenny" title="Jennys individuelle Dosierung (1 Kapsel für alle Produkte, außer Magnesium = 3 Kapseln)">
-                <span class="switch-icon">🌸</span>
-                <span class="switch-text-group">
-                  <span class="switch-title">Jennys Art</span>
-                  <span class="switch-sub">1 Kapsel (Mg: 3)</span>
-                </span>
-              </button>
-              <button class="dosage-switch-btn" id="btnModeManufacturer" data-mode="manufacturer" title="Offizielle Verzehrempfehlung laut Hersteller-Packung">
-                <span class="switch-icon">📋</span>
-                <span class="switch-text-group">
-                  <span class="switch-title">Hersteller-Empfehlung</span>
-                  <span class="switch-sub">Standard-Dosis</span>
-                </span>
-              </button>
-            </div>
+          <div class="dosage-buttons-grid" role="group" aria-label="Dosierungs-Modus wählen">
+            <button class="dosage-mode-btn active" id="btnModeJenny" data-mode="jenny" title="Jennys individuelle Dosierung (1 Kapsel tgl., Mg: 3 Kapseln)">
+              <span class="mode-icon-svg">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>
+              </span>
+              <span class="mode-text-box">
+                <span class="mode-title">Jennys Art</span>
+                <span class="mode-sub">1 Kapsel (Mg: 3)</span>
+              </span>
+            </button>
+            <button class="dosage-mode-btn" id="btnModeManufacturer" data-mode="manufacturer" title="Offizielle Verzehrempfehlung laut Hersteller-Packung">
+              <span class="mode-icon-svg">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              </span>
+              <span class="mode-text-box">
+                <span class="mode-title">Hersteller</span>
+                <span class="mode-sub">Standard-Dosis</span>
+              </span>
+            </button>
+          </div>
 
-            <div class="active-mode-caption" id="activeModeCaption">
-              <span>Modus: <strong>Jennys Art</strong> (1 Kapsel tgl., Mg: 3 Kapseln)</span>
-            </div>
+          <div class="dosage-caption-text" id="activeModeCaption">
+            Modus: <strong>Jennys Art</strong> (1 Kapsel tgl., Mg: 3 Kapseln)
           </div>
         </div>
 
-      </div>
-    </header>
-
-    <!-- Main 2-Column Dashboard Grid -->
-    <div class="dashboard-body">
-
-      <!-- LEFT COLUMN: Tägliche Supplements -->
-      <aside class="sidebar-column">
-        <div class="section-header-row">
-          <h2 class="section-title">Tägliche Supplements</h2>
-          <span class="count-pill" id="sidebarCountPill">9 Produkte</span>
+        <!-- Quick 3-Tile KPI Stats Card -->
+        <div class="stats-card">
+          <div class="stat-item">
+            <span class="stat-num" id="statSuppCount">9</span>
+            <span class="stat-lbl">Supplements</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-num" id="statNutrientCount">30</span>
+            <span class="stat-lbl">Nährstoffe</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-num text-orange-stat" id="statCoveragePct">100%</span>
+            <span class="stat-lbl" id="statCoverageLabel">Deckung</span>
+          </div>
         </div>
 
-        <!-- Daytime Filter Tabs -->
-        <div class="time-filter-row">
-          <button class="time-pill active" data-time="all">Alle</button>
-          <button class="time-pill" data-time="morning">☀️ Morgens</button>
-          <button class="time-pill" data-time="noon">🌤️ Mittags</button>
-          <button class="time-pill" data-time="evening">🌙 Abends</button>
+        <!-- Supplements Section -->
+        <div class="supplements-section">
+          <div class="section-label-row">
+            <h2 class="col-heading">Tägliche Supplements</h2>
+            <div class="section-badges">
+              <span class="swipe-hint">↔ Wischen</span>
+              <span class="count-pill" id="supplements-count-pill">9 Produkte</span>
+            </div>
+          </div>
+
+          <!-- Daytime Filter Pills -->
+          <div class="daytime-pills-row">
+            <button class="daytime-pill active" data-time="all">Alle</button>
+            <button class="daytime-pill" data-time="morning">☀️ Morgens</button>
+            <button class="daytime-pill" data-time="noon">🌤️ Mittags</button>
+            <button class="daytime-pill" data-time="evening">🌙 Abends</button>
+          </div>
+
+          <div class="supplements-stack" id="supplements-list">
+            <!-- Rendered via app.js -->
+          </div>
         </div>
 
-        <!-- Supplements Cards List -->
-        <div class="supplements-stack" id="supplementsList">
-          <!-- Dynamically populated via JS -->
-        </div>
       </aside>
 
-      <!-- RIGHT COLUMN: Nährstoff-Mengen & Tagesbedarf -->
-      <main class="main-column">
+      <!-- ==================== RIGHT COLUMN: NUTRIENTS BILANZ ==================== -->
+      <main class="main-content-col">
         
-        <!-- Header with Title & Search Input -->
-        <div class="main-header-row">
-          <div class="main-title-wrap">
-            <h2 class="section-title">Nährstoff-Mengen &amp; Tagesbedarf</h2>
-            <p class="section-subtitle">Vergleich deiner Gesamtaufnahme mit den offiziellen D-A-CH / EFSA Referenzwerten.</p>
+        <!-- Header & Search Bar -->
+        <div class="main-header-bar">
+          <div>
+            <h2 class="col-heading">Nährstoff-Mengen & Tagesbedarf</h2>
+            <p class="col-sub">Vergleich deiner Gesamtaufnahme mit den offiziellen D-A-CH / EFSA Referenzwerten.</p>
           </div>
 
-          <!-- Search Bar -->
-          <div class="search-wrap">
-            <span class="search-icon">🔍</span>
-            <input 
-              type="text" 
-              id="nutrientSearch" 
-              class="search-input" 
-              placeholder="Nährstoff suchen (z.B. Vitamin D3, Omega-3...)" 
-              autocomplete="off"
-              aria-label="Nährstoff suchen"
-            >
-            <button class="search-clear-btn" id="searchClearBtn" aria-label="Suche leeren">✕</button>
+          <div class="search-box">
+            <svg class="search-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="search-input" placeholder="Nährstoff suchen (z.B. Vitamin D3, Omega-3, Ashwagandha)..." autocomplete="off" aria-label="Nährstoff suchen">
+            <button class="search-clear-btn" id="search-clear-btn" aria-label="Suche leeren" title="Suche löschen">✕</button>
           </div>
         </div>
 
-        <!-- Category Tabs Row -->
-        <div class="category-tabs-row" id="categoryTabs">
-          <!-- Dynamically populated via JS -->
+        <!-- Filter Pills Bar -->
+        <div class="filter-pills-wrap" id="category-tabs-container">
+          <!-- Rendered via app.js -->
         </div>
 
-        <!-- 2-Column Scientific Nutrient Grid -->
-        <div class="nutrients-grid" id="nutrientsGrid" aria-label="Nährstoff-Übersicht">
-          <!-- Dynamically populated via JS -->
+        <!-- Active Filter Indicator Banner -->
+        <div id="active-filter-container"></div>
+
+        <!-- Nutrients Side-by-Side Cards Grid -->
+        <div class="nutrients-grid" id="nutrients-list" aria-label="Nährstoff-Übersicht">
+          <!-- Rendered via app.js -->
         </div>
+
+        <!-- Footer Note -->
+        <footer class="footer-note">
+          <p>Basis: Orthomol Vital f (Frauen) + Orthomol Vitamin C depo + Sunday Omega 3 Komplex + Zinzino Essent+ + Sunday Vitamin D3+K2 + Sunday Bio Ashwagandha KSM-66® + Sunday Bio Reishi + Sunday Bio Chaga + Sports & Health Magnesium Bisglycinat.</p>
+          <p class="footer-sub">Referenzwerte gemäß offiziellen D-A-CH Empfehlungen (DGE/ÖGE/SGE) & EFSA Tolerable Upper Limits.</p>
+        </footer>
 
       </main>
 
     </div>
-
-    <!-- Scientific Detail Modal -->
-    <div class="modal-backdrop" id="nutrientModal" role="dialog" aria-modal="true" aria-hidden="true">
-      <div class="modal-card">
-        <button class="modal-close-btn" id="modalCloseBtn" aria-label="Schließen">✕</button>
-        <div id="modalBody">
-          <!-- Dynamically populated via JS -->
-        </div>
-      </div>
-    </div>
-
-    <!-- Scientific Reference Footer -->
-    <footer class="app-footer">
-      <div>🌸 <strong>Jennys Nährstoffe</strong> &bull; Wissenschaftlich fundiert &bull; Stand: August 2026</div>
-      <div class="footer-ref-text">Referenzwerte: DGE / ÖGE / SGE (D-A-CH Referenzwerte) und EFSA (European Food Safety Authority)</div>
-    </footer>
-
   </div>
 
-  <!-- Application Logic -->
-  <script type="module" src="js/app.js?v=3.0.0"></script>
+  <!-- Nutrient Info Modal Container -->
+  <div id="modal-container" class="modal-container"></div>
+
+  <!-- Floating Back to Top Button -->
+  <button id="back-to-top-btn" class="back-to-top-btn" aria-label="Nach oben scrollen" title="Nach oben">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+  </button>
+
+  <script type="module" src="js/app.js?v=3.1.0"></script>
 </body>
 </html>
