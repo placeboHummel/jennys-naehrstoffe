@@ -4,7 +4,7 @@
  * Wissenschaftlich, hochleserlich mit warmem Amber/Orange-Farbschema & stilvoller grüner Bedarfsdeckung
  */
 
-import { JENNY_SUPPLEMENTS, NUTRIENTS_MASTER } from './data.js?v=3.4.0';
+import { JENNY_SUPPLEMENTS, NUTRIENTS_MASTER } from './data.js?v=3.5.0';
 
 const SHORT_PRODUCT_NAMES = {
   'orthomol-vital-f': 'Orthomol Vital f',
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const activeModeCaption = document.getElementById('activeModeCaption');
   const daytimePills = document.querySelectorAll('.daytime-pill');
 
-  // Clean Number Formatting
+  // Clean Number Formatting (German locale)
   function formatNumber(num) {
     if (num === undefined || num === null || isNaN(num)) return 0;
     if (num >= 100) return Math.round(num).toLocaleString('de-DE');
@@ -389,10 +389,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const percentBadgeText = isMissing ? '0% • Fehlt' : `${item.percent}% ${isEfsa ? 'EFSA' : 'D-A-CH'}`;
       const pillClass = isMissing ? 'nut-percent-pill is-missing' : 'nut-percent-pill';
 
-      const refTagText = item.refVal > 0 
-        ? `Ref: ${formatNumber(item.refVal)} ${item.unit}` 
-        : `Ref: ${item.refText}`;
-
       return `
         <div class="nut-card ${isMissing ? 'is-missing' : ''}" data-nutrient-id="${item.id}" role="button" tabindex="0">
           <div class="nut-top-row">
@@ -405,12 +401,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     <line x1="12" y1="16" x2="12" y2="12"></line>
                     <line x1="12" y1="8" x2="12.01" y2="8"></line>
                   </svg>
-                  <span class="info-btn-text">Info</span>
                 </button>
               </div>
               <span class="nut-extra">${item.subTitle || item.categoryName}</span>
             </div>
-            <span class="nut-ref-tag" title="${item.refText}">${refTagText}</span>
           </div>
 
           <div class="nut-amount-row">
@@ -438,13 +432,25 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
     }).join('');
 
-    // Attach click handlers ONLY to info buttons (prevents scroll hijacking on mobile touch screens)
+    // Attach click handlers to cards and info buttons
+    nutContainer.querySelectorAll('.nut-card').forEach(card => {
+      const id = card.dataset.nutrientId;
+      card.addEventListener('click', () => {
+        openNutrientModal(id);
+      });
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openNutrientModal(id);
+        }
+      });
+    });
+
     nutContainer.querySelectorAll('.nut-info-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
-        e.preventDefault();
         e.stopPropagation();
         const id = btn.dataset.nutrientId;
-        if (id) openNutrientModal(id);
+        openNutrientModal(id);
       });
     });
   }
@@ -458,6 +464,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!item) return;
 
     const modeDesc = currentDosageMode === 'jenny' ? 'Jennys Art (1 Kapsel tgl., Mg: 3)' : 'Hersteller-Empfehlung';
+
+    // Extra subtext for Vitamin D3 displaying both IE and µg
+    const modalDoseSubtitle = item.id === 'vitamin-d3' 
+      ? ` &bull; Entspricht ${formatNumber(item.totalAmount / 40)} µg reines Vitamin D3`
+      : '';
 
     const functionsHtml = item.functions && item.functions.length > 0
       ? `
@@ -511,7 +522,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="modal-title-group">
               <span class="modal-category-badge">${item.categoryName}</span>
               <h2 id="modal-nutrient-title" class="modal-title">${item.name}</h2>
-              <span class="modal-subtitle">${item.subTitle || ''} &bull; ${modeDesc}</span>
+              <span class="modal-subtitle">${item.subTitle || ''} &bull; ${modeDesc}${modalDoseSubtitle}</span>
             </div>
             <button class="modal-close-btn" id="modal-close-btn" aria-label="Modal schließen" title="Schließen (Esc)">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -616,8 +627,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     `;
 
-    document.documentElement.classList.add('modal-open');
-    document.body.classList.add('modal-open');
+    document.body.style.overflow = 'hidden';
 
     const closeBtn = document.getElementById('modal-close-btn');
     const actionBtn = document.getElementById('modal-btn-close');
@@ -625,8 +635,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function closeModal() {
       if (modalContainer) modalContainer.innerHTML = '';
-      document.documentElement.classList.remove('modal-open');
-      document.body.classList.remove('modal-open');
+      document.body.style.overflow = '';
       document.removeEventListener('keydown', handleKeydown);
     }
 
