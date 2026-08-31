@@ -35,7 +35,7 @@ export const JENNY_SUPPLEMENTS = [
       'vitamin-b9': 400,
       'vitamin-b12': 6,
       'vitamin-a': 450,
-      'vitamin-d3': 15,
+      'vitamin-d3': 600, // 15 µg = 600 IE
       'vitamin-k2': 60,
       'magnesium': 150,
       'eisen': 8,
@@ -63,7 +63,7 @@ export const JENNY_SUPPLEMENTS = [
       'vitamin-b9': 400,
       'vitamin-b12': 6,
       'vitamin-a': 450,
-      'vitamin-d3': 15,
+      'vitamin-d3': 600, // 15 µg = 600 IE
       'vitamin-k2': 60,
       'magnesium': 150,
       'eisen': 8,
@@ -146,12 +146,12 @@ export const JENNY_SUPPLEMENTS = [
     active: true,
     nutrientsJenny: {
       'omega-3': 560,
-      'vitamin-d3': 6.7,
+      'vitamin-d3': 268,
       'olivenoel-polyphenole': 9.15
     },
     nutrientsManufacturer: {
       'omega-3': 1120,
-      'vitamin-d3': 13.4,
+      'vitamin-d3': 536,
       'olivenoel-polyphenole': 18.3
     }
   },
@@ -172,11 +172,11 @@ export const JENNY_SUPPLEMENTS = [
     notes: 'Hochdosierte Kapsel mit 20.000 IE D3 (500 µg) und 200 µg K2VITAL®. Jenny nimmt täglich 1 Kapsel (500 µg D3); der Hersteller empfiehlt als Depot 1 Kapsel alle 20 Tage (25 µg D3/Tag).',
     active: true,
     nutrientsJenny: {
-      'vitamin-d3': 500,       // 1 Kapsel täglich = 500 µg (20.000 IE)
+      'vitamin-d3': 20000,     // 1 Kapsel täglich = 20.000 IE (500 µg)
       'vitamin-k2': 200        // 1 Kapsel täglich = 200 µg K2 MK-7
     },
     nutrientsManufacturer: {
-      'vitamin-d3': 25,        // Depot-Intervall: ~25 µg (1.000 IE) täglich
+      'vitamin-d3': 1000,      // Depot-Intervall: 1.000 IE (~25 µg) täglich
       'vitamin-k2': 10         // Depot-Intervall: ~10 µg K2 täglich
     }
   },
@@ -314,11 +314,11 @@ export const NUTRIENTS_MASTER = [
     categoryName: 'Vitamine',
     name: 'Vitamin D3',
     subTitle: 'Cholecalciferol (Sonnenhormon)',
-    unit: 'µg',
-    refVal: 20,
-    refText: '20 µg / 800 IE (D-A-CH bei fehlender Eigensynthese)',
-    optimalRange: '35 – 75 µg (1.400 – 3.000 IE / Tag für optimalen 25(OH)D-Blutspiegel)',
-    efsaUpperLimit: '100 µg / 4.000 IE täglich (EFSA Safe Upper Intake Level)',
+    unit: 'IE',
+    refVal: 800,
+    refText: '800 IE / 20 µg (D-A-CH Referenz)',
+    optimalRange: '1.400 – 3.000 IE / Tag (35 – 75 µg für optimalen 25(OH)D-Blutspiegel)',
+    efsaUpperLimit: '4.000 IE / 100 µg täglich (EFSA Safe Upper Intake Level)',
     functions: [
       'Reguliert über 1.000 Gene und fungiert biochemisch als steroidales Prohormon',
       'Fördert die intestinale Calcium- und Phosphatresorption zur Knochen- und Zahnmineralisierung',

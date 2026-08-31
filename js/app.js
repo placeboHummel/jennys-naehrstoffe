@@ -405,6 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <line x1="12" y1="16" x2="12" y2="12"></line>
                     <line x1="12" y1="8" x2="12.01" y2="8"></line>
                   </svg>
+                  <span class="info-btn-text">Info</span>
                 </button>
               </div>
               <span class="nut-extra">${item.subTitle || item.categoryName}</span>
@@ -437,25 +438,13 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
     }).join('');
 
-    // Attach click handlers to cards and info buttons
-    nutContainer.querySelectorAll('.nut-card').forEach(card => {
-      const id = card.dataset.nutrientId;
-      card.addEventListener('click', () => {
-        openNutrientModal(id);
-      });
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          openNutrientModal(id);
-        }
-      });
-    });
-
+    // Attach click handlers ONLY to info buttons (prevents scroll hijacking on mobile touch screens)
     nutContainer.querySelectorAll('.nut-info-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
+        e.preventDefault();
         e.stopPropagation();
         const id = btn.dataset.nutrientId;
-        openNutrientModal(id);
+        if (id) openNutrientModal(id);
       });
     });
   }
@@ -627,7 +616,8 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     `;
 
-    document.body.style.overflow = 'hidden';
+    document.documentElement.classList.add('modal-open');
+    document.body.classList.add('modal-open');
 
     const closeBtn = document.getElementById('modal-close-btn');
     const actionBtn = document.getElementById('modal-btn-close');
@@ -635,7 +625,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function closeModal() {
       if (modalContainer) modalContainer.innerHTML = '';
-      document.body.style.overflow = '';
+      document.documentElement.classList.remove('modal-open');
+      document.body.classList.remove('modal-open');
       document.removeEventListener('keydown', handleKeydown);
     }
 
