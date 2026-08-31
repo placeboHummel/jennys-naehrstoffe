@@ -1,10 +1,10 @@
 /**
  * Jennys Nährstoffe - Application Logic
  * Gestaltet nach dem Blueprint & Design-System von Djalals Nährstoffe
- * Live Dosis-Berechnung, interaktive Supplement-Filterung, Detail-Modal & Suche
+ * Wissenschaftlich, hochleserlich mit warmem Amber/Orange-Farbschema
  */
 
-import { JENNY_SUPPLEMENTS, NUTRIENTS_MASTER } from './data.js?v=3.0.0';
+import { JENNY_SUPPLEMENTS, NUTRIENTS_MASTER } from './data.js?v=3.1.0';
 
 document.addEventListener('DOMContentLoaded', () => {
   // State
@@ -160,9 +160,9 @@ document.addEventListener('DOMContentLoaded', () => {
         : (supp.dosageManufacturer || supp.dosage);
 
       const imageHtml = supp.image 
-        ? `<img src="${supp.image}" alt="${supp.name}" class="supp-img" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-           <span class="supp-img-fallback" style="display:none;">${supp.icon || '🌸'}</span>`
-        : `<span class="supp-img-fallback">${supp.icon || '🌸'}</span>`;
+        ? `<img src="${supp.image}" alt="${supp.name}" class="supp-img" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+           <span class="supp-img-fallback" style="display:none;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg></span>`
+        : `<span class="supp-img-fallback"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg></span>`;
 
       return `
         <div class="supp-card ${isSelected ? 'is-selected' : ''}" 
@@ -382,7 +382,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const isEfsa = (item.refText || '').includes('EFSA');
       const isMissing = item.totalAmount === 0;
       const percentBadgeText = isMissing ? '0% • Fehlt' : `${item.percent}% ${isEfsa ? 'EFSA' : 'D-A-CH'}`;
-      const pillClass = isMissing ? 'nut-percent-pill text-orange' : 'nut-percent-pill';
+      const pillClass = isMissing ? 'nut-percent-pill text-orange-stat' : 'nut-percent-pill';
 
       return `
         <div class="nut-card" data-nutrient-id="${item.id}" role="button" tabindex="0" title="Klicken für wissenschaftliche Details">
@@ -477,7 +477,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ${item.sources.map(s => `
             <div class="modal-source-item">
               <div class="modal-source-img">
-                <img src="${s.image}" alt="${s.supplementName}" onerror="this.parentElement.innerHTML='🌸'">
+                <img src="${s.image}" alt="${s.supplementName}" onerror="this.parentElement.innerHTML='💊'">
               </div>
               <div class="modal-source-info">
                 <strong>${s.supplementName}</strong>
@@ -518,7 +518,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="modal-metric-strip">
               <div class="metric-tile">
                 <span class="metric-lbl">Aktuelle Tagesdosis</span>
-                <span class="metric-val text-emerald">${item.amountFormatted}</span>
+                <span class="metric-val text-orange-stat">${item.amountFormatted}</span>
               </div>
               <div class="metric-tile">
                 <span class="metric-lbl">Offizielle Referenz</span>
@@ -526,7 +526,7 @@ document.addEventListener('DOMContentLoaded', () => {
               </div>
               <div class="metric-tile">
                 <span class="metric-lbl">Tagesdeckung</span>
-                <span class="metric-val text-emerald">${item.percent}%</span>
+                <span class="metric-val text-orange-stat">${item.percent}%</span>
               </div>
             </div>
 
@@ -546,7 +546,8 @@ document.addEventListener('DOMContentLoaded', () => {
             ${item.benefits ? `
               <div class="modal-section modal-sec-highlight">
                 <h3 class="modal-sec-heading">
-                  🌸 Bedeutung für Jennys Vitalität & Wohlbefinden
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                  Bedeutung für Jennys Vitalität & Stoffwechsel
                 </h3>
                 <p class="modal-text">${item.benefits}</p>
               </div>
@@ -556,7 +557,8 @@ document.addEventListener('DOMContentLoaded', () => {
             ${item.deficiencySigns ? `
               <div class="modal-section modal-sec-warning">
                 <h3 class="modal-sec-heading">
-                  ⚠️ Anzeichen einer Unterversorgung (Mangel)
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                  Anzeichen einer Unterversorgung (Mangel)
                 </h3>
                 <p class="modal-text">${item.deficiencySigns}</p>
               </div>
@@ -566,7 +568,8 @@ document.addEventListener('DOMContentLoaded', () => {
             ${item.intakeTips ? `
               <div class="modal-section">
                 <h3 class="modal-sec-heading">
-                  💡 Bioverfügbarkeit & Optimale Einnahme
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v10"/><path d="M18.4 6.6a9 9 0 1 1-12.77.04"/></svg>
+                  Bioverfügbarkeit & Optimale Einnahme
                 </h3>
                 <p class="modal-text">${item.intakeTips}</p>
               </div>
@@ -575,7 +578,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <!-- EFSA Safety & Upper Limit -->
             <div class="modal-section">
               <h3 class="modal-sec-heading">
-                🛡️ EFSA Tolerable Upper Intake Level & Sicherheit
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                EFSA Tolerable Upper Intake Level & Sicherheit
               </h3>
               <p class="modal-text">${item.efsaUpperLimit || 'Keine toxischen Obergrenzen bei physiologischer Einnahme.'}</p>
             </div>
