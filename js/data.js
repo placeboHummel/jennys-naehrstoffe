@@ -15,7 +15,7 @@ export const JENNY_SUPPLEMENTS = [
     timing: 'Morgens zum Frühstück',
     timeGroup: 'morning',
     icon: '☀️',
-    badge: '26 Mikronährstoffe + Omega-3',
+    badge: '26 Nährstoffe',
     image: 'assets/products/orthomol_vital.jpg',
     url: 'https://www.orthomol.com/de-de/produkte/orthomol-vital-f',
     notes: 'Komplexformel speziell für Frauen bei Müdigkeit & Belastung. Vor Verzehr gut schütteln. Kapsel mit wertvollen Omega-3-Fettsäuren.',
