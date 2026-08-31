@@ -140,7 +140,7 @@ export const JENNY_SUPPLEMENTS = [
     timeGroup: 'noon',
     icon: '🌿',
     badge: 'Omega-3 + R.E.V.O.O',
-    image: 'assets/products/zinzino_essent.jpg',
+    image: 'assets/products/zinzino_essent.png',
     url: 'https://www.zinzino.com/site/de-DE/product/essent-plus-premium/',
     notes: 'Synergie aus reinem Wildfischöl und R.E.V.O.O Olivenöl mit extrem hohem Polyphenol-Gehalt (Hydroxytyrosol) & Vitamin D3.',
     active: true,
