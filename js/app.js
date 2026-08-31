@@ -60,8 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const sources = [];
 
       activeSupplements.forEach(supp => {
-        const nutrientMap = currentDosageMode === 'jenny' 
-          ? (supp.nutrientsJenny || supp.nutrients) 
+        const nutrientMap = currentDosageMode === 'jenny'
+          ? (supp.nutrientsJenny || supp.nutrients)
           : (supp.nutrientsManufacturer || supp.nutrients);
 
         if (nutrientMap && nutrientMap[nutrient.id] !== undefined) {
@@ -76,8 +76,8 @@ document.addEventListener('DOMContentLoaded', () => {
               amount: amount,
               unit: nutrient.unit,
               image: supp.image,
-              dosageText: currentDosageMode === 'jenny' 
-                ? (supp.dosageJenny || supp.dosage) 
+              dosageText: currentDosageMode === 'jenny'
+                ? (supp.dosageJenny || supp.dosage)
                 : (supp.dosageManufacturer || supp.dosage)
             });
           }
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const percent = nutrient.refVal > 0 ? Math.round((totalAmount / nutrient.refVal) * 100) : 0;
       const amountFormatted = `${formatNumber(totalAmount)} ${nutrient.unit}`;
-      
+
       let sourceTag = 'Nicht abgedeckt';
       if (sources.length === 1) {
         sourceTag = sources[0].shortName || sources[0].brand;
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ? (supp.dosageJenny || supp.dosage)
         : (supp.dosageManufacturer || supp.dosage);
 
-      const imageHtml = supp.image 
+      const imageHtml = supp.image
         ? `<img src="${supp.image}" alt="${supp.name}" class="supp-img" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
            <span class="supp-img-fallback" style="display:none;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg></span>`
         : `<span class="supp-img-fallback"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg></span>`;
@@ -193,9 +193,9 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="supp-badge-group">
               ${supp.badge ? `<span class="supp-badge">${supp.badge}</span>` : ''}
               <span class="supp-select-indicator">
-                ${isSelected 
-                  ? `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Aktiv` 
-                  : `Filtern ➔`}
+                ${isSelected
+          ? `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Aktiv`
+          : `Filtern ➔`}
               </span>
             </div>
           </div>
@@ -419,14 +419,14 @@ document.addEventListener('DOMContentLoaded', () => {
           <!-- Bottom Sources Breakdown Strip -->
           <div class="nut-sources-strip">
             ${item.sources && item.sources.length > 0
-              ? item.sources.map(s => `
+          ? item.sources.map(s => `
                   <span class="nut-source-chip" title="${s.supplementName} (${s.brand})">
                     <span class="source-chip-name">${s.shortName}</span>
                     <strong class="source-chip-val">${formatNumber(s.amount)} ${s.unit}</strong>
                   </span>
                 `).join('')
-              : `<span class="nut-source-chip is-missing">Keine direkte Supplement-Quelle</span>`
-            }
+          : `<span class="nut-source-chip is-missing">Keine direkte Supplement-Quelle</span>`
+        }
           </div>
         </div>
       `;
@@ -466,7 +466,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modeDesc = currentDosageMode === 'jenny' ? 'Jennys Art (1 Kapsel tgl., Mg: 3)' : 'Hersteller-Empfehlung';
 
     // Extra subtext for Vitamin D3 displaying both IE and µg
-    const modalDoseSubtitle = item.id === 'vitamin-d3' 
+    const modalDoseSubtitle = item.id === 'vitamin-d3'
       ? ` &bull; Entspricht ${formatNumber(item.totalAmount / 40)} µg reines Vitamin D3`
       : '';
 
@@ -500,7 +500,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <div class="modal-source-info">
                 <strong>${s.supplementName}</strong>
                 <span>${s.brand} • ${s.dosageText}</span>
-                <span class="modal-source-amount">+ ${formatNumber(s.amount)} ${s.unit}</span>
+                <span class="modal-source-amount">${formatNumber(s.amount)} ${s.unit}</span>
               </div>
             </div>
           `).join('')}
