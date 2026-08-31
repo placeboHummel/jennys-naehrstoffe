@@ -422,7 +422,6 @@ document.addEventListener('DOMContentLoaded', () => {
           ? item.sources.map(s => `
                   <span class="nut-source-chip" title="${s.supplementName} (${s.brand})">
                     <span class="source-chip-name">${s.shortName}</span>
-                    <strong class="source-chip-val">${formatNumber(s.amount)} ${s.unit}</strong>
                   </span>
                 `).join('')
           : `<span class="nut-source-chip is-missing">Keine direkte Supplement-Quelle</span>`
