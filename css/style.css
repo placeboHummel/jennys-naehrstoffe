@@ -883,11 +883,10 @@ body.modal-open {
   padding: 16px 18px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
   box-shadow: var(--shadow-sm);
   transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
   position: relative;
-  cursor: pointer;
+  min-height: 154px;
 }
 
 .nut-card:hover {
@@ -906,6 +905,7 @@ body.modal-open {
   justify-content: space-between;
   align-items: flex-start;
   gap: 10px;
+  min-height: 46px;
 }
 
 .nut-title-box {
@@ -990,6 +990,9 @@ body.modal-open {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+  margin-top: auto;
+  padding-top: 10px;
+  margin-bottom: 8px;
 }
 
 .nut-amount-val {
@@ -1028,6 +1031,7 @@ body.modal-open {
   border-radius: var(--radius-pill);
   overflow: hidden;
   width: 100%;
+  margin-bottom: 6px;
 }
 
 .nut-progress-fill {
