@@ -78,16 +78,16 @@ body {
 }
 
 .page-container {
-  max-width: 1400px;
+  max-width: 1440px;
   margin: 0 auto;
 }
 
 /* ==========================================================================
-   SIDE-BY-SIDE 2-COLUMN DASHBOARD LAYOUT
+   SIDE-BY-SIDE 2-COLUMN DASHBOARD LAYOUT (GENEROUS 380px SIDEBAR)
    ========================================================================== */
 .app-layout {
   display: grid;
-  grid-template-columns: 360px 1fr;
+  grid-template-columns: 380px 1fr;
   gap: 32px;
   align-items: start;
 }
@@ -428,15 +428,15 @@ body {
   gap: 12px;
 }
 
-/* Supplement Cards */
+/* Supplement Cards - Fully Resilient & Space-Optimized */
 .supp-card {
   background: var(--bg-card);
   border: 1.5px solid var(--border-light);
   border-radius: var(--radius-lg);
-  padding: 16px;
+  padding: 14px 16px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   box-shadow: var(--shadow-sm);
   transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
   cursor: pointer;
@@ -477,13 +477,13 @@ body {
 .supp-card-body {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
 .supp-img-box {
-  width: 68px;
-  height: 68px;
-  min-width: 68px;
+  width: 60px;
+  height: 60px;
+  min-width: 60px;
   border-radius: var(--radius-md);
   background: var(--bg-muted);
   border: 1px solid var(--border-light);
@@ -493,6 +493,7 @@ body {
   padding: 4px;
   overflow: hidden;
   position: relative;
+  flex-shrink: 0;
 }
 
 .supp-card.is-selected .supp-img-box {
@@ -504,12 +505,12 @@ body {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.12));
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.1));
   transition: transform 0.2s ease;
 }
 
 .supp-card:hover .supp-img {
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
 .supp-img-fallback {
@@ -531,24 +532,25 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  min-width: 0;
 }
 
 .supp-brand {
-  font-size: 0.72rem;
+  font-size: 0.70rem;
   font-weight: 700;
   text-transform: uppercase;
   color: var(--orange-dark);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   white-space: nowrap;
   flex-shrink: 0;
 }
 
 .supp-timing-badge {
-  font-size: 0.72rem;
+  font-size: 0.70rem;
   color: var(--text-secondary);
   background: var(--bg-muted);
-  padding: 2px 8px;
+  padding: 2px 7px;
   border-radius: var(--radius-pill);
   font-weight: 500;
   white-space: nowrap;
@@ -557,7 +559,7 @@ body {
 
 .supp-title {
   font-family: var(--font-heading);
-  font-size: 1.02rem;
+  font-size: 1.00rem;
   font-weight: 700;
   color: var(--text-main);
   line-height: 1.25;
@@ -569,8 +571,9 @@ body {
   align-items: center;
   padding-top: 10px;
   border-top: 1px solid var(--border-light);
-  font-size: 0.84rem;
-  gap: 8px;
+  font-size: 0.82rem;
+  gap: 6px;
+  min-width: 0;
 }
 
 .supp-card.is-selected .supp-dose-box {
@@ -580,24 +583,25 @@ body {
 .supp-dose-val {
   color: var(--text-secondary);
   font-weight: 600;
-  font-size: 0.82rem;
+  font-size: 0.80rem;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .supp-badge-group {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   flex-shrink: 0;
 }
 
 .supp-badge {
-  font-size: 0.72rem;
+  font-size: 0.70rem;
   font-weight: 600;
   color: var(--blue-main);
   background: var(--blue-bg);
   border: 1px solid var(--blue-border);
-  padding: 2px 8px;
+  padding: 2px 7px;
   border-radius: var(--radius-sm);
   white-space: nowrap;
   flex-shrink: 0;
@@ -606,13 +610,14 @@ body {
 .supp-select-indicator {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  font-size: 0.72rem;
+  gap: 3px;
+  font-size: 0.70rem;
   font-weight: 700;
-  padding: 2px 8px;
+  padding: 2px 6px;
   border-radius: var(--radius-pill);
   transition: all 0.15s ease;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .supp-card.is-selected .supp-select-indicator {
@@ -1585,9 +1590,9 @@ body {
   }
 
   .supp-img-box {
-    width: 60px;
-    height: 60px;
-    min-width: 60px;
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
   }
 
   .supp-title {
